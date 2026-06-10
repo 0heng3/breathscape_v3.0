@@ -1,0 +1,10 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="bridge">
+  <path d="M 172 16 L 143 11 L 112 13 L 49 36" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 172 41 L 131 38 L 79 49 L 61 56" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 177 15 L 195 2 L 208 1 L 215 8 L 225 32 L 225 45 L 222 49 L 186 61 L 175 59 L 167 48 L 168 38 L 182 15" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 64 48 L 62 36 L 54 26 L 44 21 L 33 24 L 24 32 L 16 48 L 13 61 L 15 76 L 28 83 L 45 85 L 56 80 L 75 65 L 78 49 L 73 42 L 63 30 L 48 25" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 191 14 L 255 12" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 182 55 L 248 48" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 47 49 L 42 48 L 0 63" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 73 61 L 44 71 L 9 79" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

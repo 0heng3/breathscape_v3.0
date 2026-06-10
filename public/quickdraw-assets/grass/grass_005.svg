@@ -1,0 +1,9 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="grass">
+  <path d="M 4 26 L 9 48 L 21 60 L 30 82 L 56 177" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 56 22 L 91 82 L 108 156 L 108 181 L 104 177" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 138 65 L 160 125 L 164 156 L 164 168 L 160 156" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 255 43 L 242 56 L 233 74 L 233 117 L 229 130 L 229 156" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 160 0 L 160 26 L 177 86 L 186 100 L 195 125 L 207 134 L 212 147 L 224 160 L 216 164" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 0 78 L 8 90 L 26 99 L 39 117 L 56 125 L 103 164 L 112 177 L 134 190" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 121 48 L 151 104 L 160 134" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

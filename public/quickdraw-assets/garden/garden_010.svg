@@ -1,0 +1,10 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="garden">
+  <path d="M 13 255 L 7 210 L 0 192 L 27 144 L 32 147 L 41 165 L 56 185 L 46 254" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 57 195 L 74 164 L 86 162 L 103 171 L 104 203 L 98 237 L 95 241" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 112 184 L 130 150 L 166 154 L 168 162 L 158 202 L 154 238" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 179 171 L 199 135 L 213 149 L 222 165 L 203 202 L 197 222 L 197 242" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 87 177 L 91 82" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 58 92 L 53 53 L 57 33 L 66 32 L 81 17 L 104 7 L 107 7 L 104 32 L 143 29 L 142 64 L 138 79 L 88 118" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 181 161 L 173 65" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 136 42 L 140 10 L 152 2 L 217 1 L 220 15 L 218 79 L 206 119" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

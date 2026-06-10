@@ -1,0 +1,9 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="hurricane">
+  <path d="M 83 15 L 62 24 L 47 39 L 44 58 L 50 81 L 62 93 L 75 96 L 95 93 L 113 81 L 115 71 L 105 60 L 88 56 L 73 57 L 40 72 L 30 86 L 24 101 L 25 119 L 32 128 L 56 134 L 80 136 L 96 135 L 107 126 L 107 115 L 100 107 L 82 105 L 68 108 L 50 118 L 42 134 L 41 144 L 53 159 L 66 165 L 102 165 L 98 158 L 87 154 L 77 155 L 56 163 L 47 175 L 46 182 L 58 192" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 255 29 L 94 28 L 51 20" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 208 60 L 175 58 L 72 34 L 25 18 L 6 8 L 0 0" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 233 81 L 218 87 L 193 87 L 168 82 L 95 66 L 63 51" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 174 107 L 169 145" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 174 106 L 208 106 L 227 107 L 227 110 L 213 152 L 171 147" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 168 148 L 184 161 L 205 173 L 211 166 L 213 153" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

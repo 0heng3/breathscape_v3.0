@@ -1,0 +1,5 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="pond">
+  <path d="M 0 73 L 24 65 L 53 67 L 71 92 L 86 104 L 131 122 L 169 128 L 194 127 L 229 115 L 246 99 L 249 93 L 247 90" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 2 18 L 31 1 L 68 0 L 107 5 L 192 26 L 230 39 L 239 47 L 252 72 L 254 93" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 5 112 L 14 106 L 23 93 L 33 61" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

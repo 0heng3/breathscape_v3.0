@@ -1,0 +1,5 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="tornado">
+  <path d="M 136 0 L 114 3 L 99 8 L 54 29 L 46 36 L 65 43 L 112 51 L 150 47 L 180 32 L 180 26 L 174 19 L 151 11 L 89 15 L 6 35 L 0 38 L 6 45 L 28 56 L 77 64 L 179 70 L 184 64 L 184 57 L 178 28" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 1 39 L 53 137 L 84 183 L 106 255" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 106 255 L 148 158 L 160 98 L 176 60 L 178 45" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

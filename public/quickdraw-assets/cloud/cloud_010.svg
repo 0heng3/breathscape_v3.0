@@ -1,0 +1,5 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="cloud">
+  <path d="M 173 152 L 126 174 L 93 181 L 72 176 L 53 165 L 41 151 L 37 138 L 42 139 L 44 143 L 45 165 L 41 172 L 27 178 L 19 173 L 13 164 L 5 144 L 0 115 L 4 93 L 8 89 L 13 94 L 4 52 L 6 39 L 11 32 L 18 29 L 62 34 L 93 26 L 113 14 L 148 1 L 158 0 L 169 3 L 178 20 L 188 51 L 200 44 L 212 48 L 223 74 L 221 89 L 213 115 L 208 113 L 208 105 L 210 100 L 214 102 L 215 115 L 204 146 L 197 148 L 170 133 L 160 132 L 148 136" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 69 224 L 68 218 L 73 222 L 79 246" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 164 224 L 165 255" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

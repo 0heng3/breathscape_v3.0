@@ -1,0 +1,10 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="pond">
+  <path d="M 23 22 L 37 15 L 56 13 L 92 24 L 117 24 L 130 20 L 158 6 L 177 2 L 223 0 L 236 3 L 245 10 L 252 23 L 255 57 L 248 65 L 234 68 L 208 71 L 155 70 L 90 57 L 34 50 L 11 41 L 0 32 L 3 27 L 29 21" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 42 25 L 38 27 L 39 30 L 50 31 L 46 25 L 41 26" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 218 25 L 212 24 L 208 30 L 212 36 L 218 35 L 218 25 L 212 28" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 158 45 L 141 46 L 140 50 L 145 56 L 155 52 L 151 44" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 148 45 L 146 51" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 97 40 L 110 36 L 138 37 L 163 33 L 183 33" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 189 52 L 213 56" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 60 46 L 67 45" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

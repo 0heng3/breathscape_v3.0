@@ -1,0 +1,6 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="snail">
+  <path d="M 111 55 L 114 39 L 123 32 L 135 32 L 150 41 L 157 51 L 161 64 L 160 83 L 155 98 L 148 107 L 137 114 L 124 117 L 106 115 L 86 100 L 74 74 L 73 57 L 76 41 L 93 11 L 112 1 L 139 2 L 159 12 L 178 30 L 192 57 L 192 81 L 188 92 L 175 109 L 151 122 L 127 123 L 95 111" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 96 110 L 73 86 L 57 57 L 43 20 L 22 39 L 11 39 L 6 32 L 0 14 L 14 40 L 27 42 L 37 38 L 43 27 L 42 3" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 7 37 L 27 107 L 33 119 L 43 127 L 57 133 L 77 136 L 132 129" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 194 101 L 219 97 L 255 97 L 247 105 L 222 117" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,5 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="squiggle">
+  <path d="M 1 104 L 0 98 L 10 83 L 20 78 L 26 81 L 28 96 L 28 155 L 54 95 L 45 134 L 43 156 L 48 154 L 95 88 L 104 82 L 106 84 L 106 136 L 112 141 L 118 136 L 128 108 L 139 62 L 131 59 L 113 61 L 89 72" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 84 94 L 90 122 L 110 146 L 129 155 L 160 156 L 180 146 L 199 127 L 216 90 L 222 63 L 219 172 L 212 202" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 181 230 L 168 227 L 160 219 L 153 206 L 149 172 L 154 132 L 169 92 L 193 54 L 223 20 L 247 2 L 255 0" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,7 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="windmill">
+  <path d="M 95 250 L 95 233 L 104 177 L 104 149 L 102 142 L 84 129 L 83 111 L 86 106 L 97 99 L 110 98 L 128 111 L 132 121 L 130 139 L 125 141 L 115 139 L 113 144 L 104 255 L 97 248" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 87 129 L 46 185 L 9 210 L 0 211 L 9 198 L 14 179 L 23 165 L 57 137 L 85 120" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 94 98 L 62 0 L 89 52 L 102 99" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 123 108 L 148 101 L 180 84 L 235 68 L 232 77 L 211 89 L 132 117" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 112 135 L 120 152" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

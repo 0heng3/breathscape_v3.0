@@ -1,0 +1,14 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="tree">
+  <path d="M 0 255 L 18 245 L 34 231 L 76 165 L 85 134 L 87 74" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 170 253 L 138 211 L 115 164 L 106 116 L 105 72" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 98 78 L 98 113" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 103 106 L 106 145" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 92 149 L 96 190" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 89 167 L 65 216" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 81 182 L 62 233" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 67 204 L 65 249" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 96 197 L 105 241" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 100 180 L 104 195 L 125 231" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 126 194 L 126 202 L 140 238" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 92 66 L 70 68 L 64 63 L 64 38 L 72 25 L 80 20 L 92 19 L 93 22 L 93 29 L 85 40 L 86 29 L 99 20 L 115 17 L 125 20 L 129 25 L 129 34 L 122 47 L 123 38 L 132 29 L 151 24 L 156 32 L 152 48 L 146 60 L 136 63 L 133 53 L 139 48 L 154 40 L 171 41 L 172 55 L 157 71 L 142 77 L 121 79 L 112 74 L 109 69 L 114 63 L 127 63 L 134 67 L 140 73 L 139 78 L 101 87 L 84 87 L 69 79 L 68 67 L 71 59 L 87 42 L 102 38 L 111 39 L 111 53 L 103 62 L 80 74 L 56 78 L 38 76 L 29 71 L 24 54 L 26 42 L 34 31 L 55 18 L 92 13 L 101 15 L 105 20 L 101 41 L 92 54 L 69 67 L 48 69 L 34 59 L 32 50 L 34 38 L 51 20 L 65 15 L 86 17 L 93 24 L 95 50 L 91 65 L 70 90 L 57 96 L 33 95 L 24 89 L 17 80 L 15 55 L 19 39 L 28 25 L 48 7 L 71 0 L 97 1 L 121 16 L 127 26 L 129 35 L 127 47 L 108 68 L 87 80 L 80 80 L 76 75 L 79 51 L 98 27 L 112 17 L 125 12 L 137 13 L 146 20 L 154 43 L 154 55 L 150 67 L 120 90 L 104 92 L 97 83 L 97 63 L 103 50 L 113 40 L 124 36 L 136 35 L 149 36 L 163 49 L 165 68 L 160 79 L 151 87 L 132 91 L 117 89 L 106 80" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

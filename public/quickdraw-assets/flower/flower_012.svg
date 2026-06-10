@@ -1,0 +1,8 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="flower">
+  <path d="M 76 52 L 68 58 L 52 104 L 49 123 L 47 157 L 49 225 L 43 255 L 52 232" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 72 48 L 59 6 L 63 0 L 78 1 L 90 12 L 106 33 L 108 53 L 105 66 L 98 71 L 92 70 L 68 56" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 57 50 L 36 48 L 15 58 L 8 68 L 2 86 L 0 109 L 17 132 L 36 139 L 49 133 L 57 124 L 65 102 L 66 83" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 61 50 L 68 50 L 83 60 L 107 79 L 113 87 L 109 97 L 95 112 L 78 117 L 67 113" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 49 108 L 28 118 L 24 127 L 23 140 L 23 150 L 30 161 L 35 166 L 49 167" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 49 167 L 49 166" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

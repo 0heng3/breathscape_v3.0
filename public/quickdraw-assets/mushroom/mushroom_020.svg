@@ -1,0 +1,6 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="mushroom">
+  <path d="M 9 142 L 6 128 L 42 58 L 59 35 L 90 11 L 110 2 L 149 0 L 192 13 L 208 20 L 231 42 L 241 60 L 246 73 L 254 125 L 229 125 L 202 131 L 171 134 L 0 135" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 68 144 L 78 188 L 80 236" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 130 136 L 135 199 L 143 253" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 20 102 L 34 104 L 56 96 L 89 66 L 111 35 L 115 23 L 116 15 L 105 6" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

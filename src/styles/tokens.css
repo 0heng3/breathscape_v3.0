@@ -1,0 +1,22 @@
+:root {
+  --bg: #fff7e8;
+  --bg-lavender: #f3edfb;
+  --action: #f7c948;
+  --mint: #9ed8c3;
+  --aqua: #8ec5e8;
+  --pink: #f5a8c8;
+  --violet: #a88be8;
+  --violet-deep: #5f4d7a;
+  --soil: #c8a978;
+  --text: #3f3a4a;
+  --muted: #7a7285;
+  --card: rgba(255, 255, 255, 0.76);
+  --card-strong: rgba(255, 252, 239, 0.9);
+  --shadow-stage: 0 24px 80px rgba(80, 64, 120, 0.18);
+  --shadow-soft: 0 18px 42px rgba(80, 64, 120, 0.12);
+  --shadow-button: 0 14px 30px rgba(158, 130, 72, 0.18);
+  --radius-stage: 32px;
+  --radius-panel: 28px;
+  --radius-control: 999px;
+  --touch: 56px;
+}

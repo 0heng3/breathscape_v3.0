@@ -1,0 +1,1573 @@
+:root {
+  color: #3d4038;
+  background: #ede7d8;
+  font-family:
+    Inter, ui-rounded, "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 320px;
+  height: 100%;
+  margin: 0;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.app {
+  min-height: 100%;
+  padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom))
+    max(18px, env(safe-area-inset-left));
+  background:
+    radial-gradient(circle at 15% 8%, rgba(255, 245, 204, 0.55), transparent 24rem),
+    linear-gradient(135deg, #eee8d9 0%, #dbe5dc 50%, #e9dfd3 100%);
+}
+
+.ipad-shell {
+  width: min(1180px, 100%);
+  min-height: min(820px, calc(100vh - 36px));
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid rgba(82, 81, 67, 0.16);
+  border-radius: 28px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.26)),
+    repeating-linear-gradient(90deg, rgba(122, 108, 84, 0.03) 0 1px, transparent 1px 5px),
+    #f5f0e4;
+  box-shadow: 0 24px 80px rgba(75, 72, 58, 0.22);
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: 52px 1fr 52px;
+  align-items: center;
+  gap: 18px;
+  min-height: 88px;
+  padding: 18px clamp(18px, 3vw, 34px) 12px;
+}
+
+.topbar h1,
+.section-heading h2,
+.message-panel h2 {
+  margin: 0;
+  color: #363a31;
+  font-weight: 760;
+  letter-spacing: 0;
+}
+
+.topbar h1 {
+  font-size: clamp(24px, 3vw, 38px);
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: #78806c;
+  font-size: 13px;
+  font-weight: 720;
+}
+
+.icon-button,
+.tool-button,
+.mood-tile,
+.primary-action,
+.secondary-action {
+  min-height: 48px;
+  border: 0;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+}
+
+.icon-button {
+  display: inline-grid;
+  width: 50px;
+  height: 50px;
+  place-items: center;
+  border-radius: 50%;
+  color: #5d6454;
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: inset 0 0 0 1px rgba(85, 83, 67, 0.1);
+}
+
+.icon-button.ghost {
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.icon-button:hover,
+.tool-button:hover,
+.mood-tile:hover,
+.primary-action:hover,
+.secondary-action:hover {
+  transform: translateY(-1px);
+}
+
+.screen {
+  position: relative;
+  min-height: calc(min(820px, 100vh - 36px) - 88px);
+  padding: 20px clamp(20px, 4vw, 46px) 34px;
+}
+
+.home-screen,
+.init-screen,
+.breathe-screen,
+.card-screen {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 440px);
+  grid-template-rows: minmax(0, auto) auto;
+  align-items: center;
+  column-gap: clamp(24px, 5vw, 54px);
+  row-gap: 22px;
+}
+
+.home-screen .garden-scene,
+.init-screen .garden-scene,
+.breathe-screen .garden-scene {
+  grid-row: 1 / span 2;
+}
+
+.home-screen > .primary-action,
+.init-screen > .primary-action,
+.breathe-screen > .primary-action {
+  grid-column: 2;
+  align-self: start;
+}
+
+.home-copy,
+.init-screen .message-panel,
+.breathe-screen .message-panel {
+  align-self: end;
+}
+
+.home-copy {
+  z-index: 2;
+  color: #4d513f;
+  font-size: clamp(26px, 4vw, 48px);
+  font-weight: 760;
+  line-height: 1.38;
+}
+
+.home-copy p {
+  margin: 0 0 12px;
+}
+
+.primary-action,
+.secondary-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: fit-content;
+  border-radius: 999px;
+  font-weight: 750;
+}
+
+.primary-action {
+  padding: 16px 25px;
+  color: #fffaf0;
+  background: #667b57;
+  box-shadow: 0 12px 34px rgba(73, 101, 70, 0.24);
+}
+
+.secondary-action {
+  padding: 13px 18px;
+  color: #596450;
+  background: #fff8ea;
+  box-shadow: inset 0 0 0 1px rgba(96, 93, 70, 0.14);
+}
+
+.primary-action.compact {
+  padding: 12px 18px;
+}
+
+.mood-screen {
+  display: grid;
+  align-content: center;
+  gap: 22px;
+}
+
+.section-heading h2 {
+  font-size: clamp(30px, 4vw, 48px);
+}
+
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.mood-tile {
+  display: grid;
+  min-height: 138px;
+  place-items: center;
+  gap: 8px;
+  padding: 18px 10px;
+  border-radius: 22px;
+  color: #3e4739;
+  background: rgba(255, 251, 240, 0.76);
+  box-shadow: inset 0 0 0 1px rgba(101, 97, 75, 0.12), 0 12px 32px rgba(88, 82, 64, 0.08);
+}
+
+.mood-tile span {
+  font-size: 22px;
+  font-weight: 760;
+}
+
+.mood-tile small {
+  color: #747a67;
+  font-size: 14px;
+}
+
+.mood-tile.selected {
+  background: #f9edcc;
+  box-shadow: inset 0 0 0 3px #d9b56d, 0 16px 42px rgba(142, 111, 47, 0.16);
+}
+
+.soft-note {
+  margin: 0;
+  color: #6a705f;
+  font-size: 18px;
+}
+
+.message-panel,
+.diary-card,
+.guide-panel,
+.week-map,
+.diary-row,
+.empty-state {
+  border: 1px solid rgba(91, 88, 66, 0.12);
+  border-radius: 22px;
+  background: rgba(255, 251, 239, 0.74);
+  box-shadow: 0 18px 48px rgba(80, 75, 57, 0.12);
+  backdrop-filter: blur(12px);
+}
+
+.message-panel {
+  z-index: 2;
+  padding: clamp(22px, 4vw, 34px);
+}
+
+.message-panel h2 {
+  margin-bottom: 16px;
+  font-size: clamp(28px, 4vw, 44px);
+}
+
+.message-panel p,
+.diary-card p,
+.guide-panel p,
+.week-map p,
+.diary-row p,
+.empty-state p {
+  color: #555b4c;
+  font-size: 18px;
+  line-height: 1.72;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.chips span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  color: #5d684f;
+  background: #e9f0d8;
+  font-weight: 720;
+}
+
+.create-screen {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr) 276px;
+  gap: 18px;
+  min-height: calc(min(820px, 100vh - 36px) - 88px);
+}
+
+.tool-panel {
+  display: grid;
+  align-content: center;
+  gap: 10px;
+}
+
+.tool-button {
+  display: grid;
+  min-width: 76px;
+  min-height: 76px;
+  place-items: center;
+  gap: 4px;
+  padding: 10px 8px;
+  border-radius: 20px;
+  color: #5f6658;
+  background: rgba(255, 251, 241, 0.72);
+  box-shadow: inset 0 0 0 1px rgba(90, 87, 68, 0.11);
+}
+
+.tool-button.active {
+  color: #364031;
+  background: color-mix(in srgb, var(--tool-color) 24%, #fff8ea);
+  box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--tool-color) 70%, #fff);
+}
+
+.tool-button span {
+  font-size: 14px;
+  font-weight: 760;
+}
+
+.canvas-stage {
+  position: relative;
+  min-height: 560px;
+  overflow: hidden;
+  border: 1px solid rgba(90, 87, 68, 0.12);
+  border-radius: 26px;
+  background: #f6efd9;
+}
+
+.canvas-stage .garden-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
+.drawing-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.canvas-caption {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: calc(100% - 36px);
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: #5c634f;
+  background: rgba(255, 250, 237, 0.74);
+  font-size: 15px;
+  font-weight: 720;
+}
+
+.guide-panel {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  padding: 20px;
+}
+
+.guide-panel p {
+  margin: 0;
+}
+
+.element-meter {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.element-meter div {
+  display: grid;
+  min-height: 56px;
+  place-items: center;
+  border-radius: 16px;
+  color: #5d6754;
+  background: rgba(236, 241, 220, 0.86);
+  font-weight: 760;
+}
+
+.garden-scene {
+  position: relative;
+  width: min(650px, 100%);
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 34px;
+  background: #f5eedb;
+  filter: saturate(calc(0.9 + var(--intensity) * 0.18)) brightness(var(--light));
+  box-shadow: inset 0 0 0 1px rgba(107, 101, 74, 0.1), 0 24px 70px rgba(77, 79, 58, 0.14);
+}
+
+.garden-scene.quiet {
+  min-height: 0;
+}
+
+.paper-grain {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(120, 104, 79, 0.025) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(90deg, rgba(120, 104, 79, 0.022) 0 1px, transparent 1px 7px);
+  mix-blend-mode: multiply;
+}
+
+.sky-wash,
+.sun-wash,
+.mood-haze,
+.soil,
+.seed,
+.wind-line,
+.rain-drop,
+.grass-blade,
+.flower-bloom,
+.sun-mark {
+  position: absolute;
+}
+
+.sky-wash {
+  inset: 0 0 34%;
+  background: linear-gradient(180deg, rgba(190, 220, 222, 0.62), rgba(236, 229, 199, 0.34));
+}
+
+.sun-wash {
+  top: 8%;
+  right: 10%;
+  width: 30%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(247, 202, 104, calc(0.16 + var(--intensity) * 0.1));
+  filter: blur(18px);
+}
+
+.mood-haze {
+  inset: 0;
+  opacity: 0.32;
+}
+
+.mood-haze.rain {
+  background: linear-gradient(180deg, rgba(104, 147, 170, 0.26), transparent 58%);
+}
+
+.mood-haze.wind {
+  background: linear-gradient(120deg, transparent 0 35%, rgba(124, 172, 169, 0.22) 50%, transparent 66%);
+}
+
+.mood-haze.flame {
+  background: radial-gradient(circle at 72% 54%, rgba(222, 126, 82, 0.24), transparent 32%);
+}
+
+.mood-haze.fog,
+.mood-haze.unknown {
+  background: rgba(215, 219, 205, 0.42);
+  backdrop-filter: blur(1px);
+}
+
+.soil {
+  left: 8%;
+  right: 8%;
+  bottom: 9%;
+  height: 26%;
+  border-radius: 50% 50% 18% 18%;
+  background: linear-gradient(180deg, rgba(157, 132, 94, 0.28), rgba(116, 102, 74, 0.32));
+}
+
+.seed {
+  left: 50%;
+  bottom: 29%;
+  width: 18px;
+  height: 26px;
+  border-radius: 60% 40% 60% 40%;
+  background: #8f7d4e;
+  transform: rotate(28deg);
+}
+
+.wind-line {
+  top: calc(18% + (var(--i) % 5) * 9%);
+  left: calc(8% + (var(--i) % 4) * 19%);
+  width: 24%;
+  height: 28px;
+  border-top: 4px solid rgba(93, 149, 153, 0.5);
+  border-radius: 50%;
+  animation: windDrift 4s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.7s);
+}
+
+.calm .wind-line {
+  animation-duration: 7s;
+  opacity: 0.45;
+}
+
+.rain-drop {
+  top: calc(10% + (var(--i) % 6) * 10%);
+  left: calc(10% + (var(--i) % 11) * 7%);
+  width: 3px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(82, 134, 172, 0.44);
+  animation: rainFall 1.8s ease-in infinite;
+  animation-delay: calc(var(--i) * -0.12s);
+}
+
+.calm .rain-drop {
+  animation-duration: 3s;
+  opacity: 0.42;
+}
+
+.grass-blade {
+  left: calc(18% + (var(--i) % 13) * 5%);
+  bottom: calc(27% + (var(--i) % 3) * 1%);
+  width: 8px;
+  height: calc(28px + (var(--i) % 4) * 7px);
+  border-left: 4px solid rgba(91, 143, 79, 0.75);
+  border-radius: 70% 0 0 0;
+  transform-origin: bottom;
+  transform: rotate(calc(-15deg + (var(--i) % 6) * 6deg));
+  animation: growIn 650ms ease both, sway 3.4s ease-in-out infinite;
+}
+
+.flower-bloom {
+  left: calc(25% + (var(--i) % 7) * 9%);
+  bottom: calc(35% + (var(--i) % 2) * 3%);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #efc76d 0 17%, transparent 18%),
+    radial-gradient(circle at 50% 8%, #d98da1 0 28%, transparent 29%),
+    radial-gradient(circle at 91% 50%, #d98da1 0 28%, transparent 29%),
+    radial-gradient(circle at 50% 91%, #d98da1 0 28%, transparent 29%),
+    radial-gradient(circle at 8% 50%, #d98da1 0 28%, transparent 29%);
+  animation: bloom 800ms ease both;
+  animation-delay: calc(var(--i) * 80ms);
+}
+
+.sun-mark {
+  top: 12%;
+  right: 12%;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: rgba(242, 187, 75, 0.42);
+  box-shadow: 0 0 0 18px rgba(242, 187, 75, 0.12), 0 0 36px rgba(242, 187, 75, 0.28);
+}
+
+.breath-orb {
+  position: absolute;
+  left: 28%;
+  top: 42%;
+  z-index: 3;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: rgba(255, 226, 139, 0.72);
+  box-shadow: 0 0 36px rgba(255, 210, 108, 0.56);
+  animation: breathe 8s ease-in-out 3;
+}
+
+.diary-card {
+  z-index: 2;
+  display: grid;
+  gap: 16px;
+  padding: 28px;
+}
+
+.diary-card input {
+  width: 100%;
+  min-height: 54px;
+  border: 0;
+  border-bottom: 2px solid rgba(111, 105, 78, 0.18);
+  color: #3d4338;
+  background: transparent;
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 760;
+  outline: 0;
+}
+
+.diary-list-screen {
+  display: grid;
+  gap: 20px;
+}
+
+.diary-layout {
+  display: grid;
+  grid-template-columns: 310px minmax(0, 1fr);
+  gap: 18px;
+  min-height: 460px;
+}
+
+.week-map,
+.diary-row,
+.empty-state {
+  padding: 20px;
+}
+
+.mini-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.mini-week span {
+  display: grid;
+  min-height: 42px;
+  place-items: center;
+  border-radius: 14px;
+  background: rgba(226, 225, 205, 0.72);
+  color: #6a715e;
+  font-weight: 760;
+}
+
+.mini-week .filled {
+  background: color-mix(in srgb, #9fbd7a calc(35% + var(--level) * 45%), #f6efd9);
+}
+
+.diary-list {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  max-height: 470px;
+  overflow: auto;
+  padding-right: 6px;
+}
+
+.diary-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 16px;
+}
+
+.diary-row h3 {
+  margin: 0;
+  color: #3c4237;
+  font-size: 24px;
+}
+
+.diary-row p {
+  margin: 8px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.diary-thumb {
+  height: 104px;
+  overflow: hidden;
+  border-radius: 18px;
+}
+
+.diary-thumb .garden-scene {
+  width: 100%;
+  min-height: 104px;
+  border-radius: 18px;
+  box-shadow: none;
+}
+
+.empty-state {
+  display: grid;
+  min-height: 220px;
+  place-items: center;
+  text-align: center;
+}
+
+@keyframes windDrift {
+  0%,
+  100% {
+    transform: translateX(-8px) scaleX(0.86);
+  }
+  50% {
+    transform: translateX(16px) scaleX(1.08);
+  }
+}
+
+@keyframes rainFall {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(120px);
+    opacity: 0;
+  }
+}
+
+@keyframes growIn {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    rotate: -3deg;
+  }
+  50% {
+    rotate: 5deg;
+  }
+}
+
+@keyframes bloom {
+  from {
+    transform: scale(0.2) rotate(-12deg);
+    opacity: 0;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(0.72);
+  }
+  48% {
+    transform: scale(1.55);
+  }
+}
+
+@media (max-width: 900px) {
+  .app {
+    padding: 0;
+  }
+
+  .ipad-shell {
+    min-height: 100vh;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .home-screen,
+  .init-screen,
+  .breathe-screen,
+  .card-screen,
+  .diary-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .home-screen .garden-scene,
+  .init-screen .garden-scene,
+  .breathe-screen .garden-scene,
+  .home-screen > .primary-action,
+  .init-screen > .primary-action,
+  .breathe-screen > .primary-action {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .home-copy {
+    font-size: clamp(24px, 7vw, 38px);
+  }
+
+  .mood-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .create-screen {
+    grid-template-columns: 1fr;
+  }
+
+  .tool-panel {
+    grid-template-columns: repeat(5, 1fr);
+    align-content: stretch;
+  }
+
+  .tool-button {
+    min-width: 0;
+    min-height: 66px;
+  }
+
+  .canvas-stage {
+    min-height: min(54vh, 540px);
+  }
+
+  .guide-panel {
+    gap: 12px;
+  }
+
+  .garden-scene,
+  .garden-scene.quiet {
+    min-height: 390px;
+  }
+}
+
+@media (max-width: 560px) {
+  .topbar {
+    grid-template-columns: 46px 1fr 46px;
+    gap: 10px;
+    min-height: 76px;
+  }
+
+  .screen {
+    min-height: calc(100vh - 76px);
+    padding: 14px 14px 24px;
+  }
+
+  .mood-grid {
+    gap: 10px;
+  }
+
+  .mood-tile {
+    min-height: 120px;
+  }
+
+  .tool-panel {
+    gap: 8px;
+  }
+
+  .tool-button span {
+    font-size: 12px;
+  }
+
+  .diary-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Competition-inspired yellow-purple visual refresh */
+:root {
+  color: #35264a;
+  background: #fff2b8;
+  --ink: #35264a;
+  --muted: #75648d;
+  --sun: #ffd15a;
+  --sun-hot: #ffb234;
+  --violet: #7f57ff;
+  --violet-deep: #4b2b88;
+  --violet-soft: #c8b2ff;
+  --mint: #7ee4b8;
+  --aqua: #73d7ff;
+  --rose: #ff7ab8;
+  --paper: rgba(255, 252, 234, 0.84);
+}
+
+.app {
+  background:
+    radial-gradient(circle at 14% 12%, rgba(255, 226, 104, 0.86), transparent 18rem),
+    radial-gradient(circle at 82% 9%, rgba(174, 125, 255, 0.55), transparent 20rem),
+    radial-gradient(circle at 78% 83%, rgba(255, 122, 184, 0.22), transparent 17rem),
+    linear-gradient(135deg, #fff6ca 0%, #f2d8ff 45%, #d9efff 100%);
+}
+
+.ipad-shell {
+  position: relative;
+  border: 1px solid rgba(98, 54, 170, 0.22);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 248, 0.8), rgba(255, 247, 218, 0.58)),
+    radial-gradient(circle at 16% 22%, rgba(255, 209, 90, 0.24), transparent 22rem),
+    radial-gradient(circle at 88% 18%, rgba(127, 87, 255, 0.22), transparent 24rem),
+    repeating-linear-gradient(90deg, rgba(106, 70, 143, 0.035) 0 1px, transparent 1px 7px),
+    #fff8df;
+  box-shadow: 0 28px 90px rgba(82, 47, 126, 0.25);
+}
+
+.ipad-shell::before {
+  position: absolute;
+  inset: 18px;
+  pointer-events: none;
+  border: 1px solid rgba(255, 210, 88, 0.45);
+  border-radius: 22px;
+  content: "";
+}
+
+.topbar h1,
+.section-heading h2,
+.message-panel h2 {
+  color: var(--ink);
+}
+
+.eyebrow {
+  color: #7b57b7;
+  text-transform: uppercase;
+}
+
+.icon-button {
+  color: var(--violet-deep);
+  background: rgba(255, 255, 246, 0.76);
+  box-shadow:
+    inset 0 0 0 1px rgba(98, 54, 170, 0.14),
+    0 12px 28px rgba(92, 55, 130, 0.12);
+}
+
+.home-copy {
+  color: var(--ink);
+  text-shadow: 0 3px 0 rgba(255, 212, 97, 0.22);
+}
+
+.home-copy::before {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  margin-bottom: 16px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  color: #5b328f;
+  background: rgba(255, 227, 118, 0.72);
+  box-shadow: inset 0 0 0 1px rgba(127, 87, 255, 0.18);
+  content: "情绪场景共创 Demo";
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.primary-action {
+  color: #fffaf0;
+  background: linear-gradient(135deg, var(--violet) 0%, #9a57ff 48%, var(--sun-hot) 100%);
+  box-shadow: 0 16px 38px rgba(111, 72, 207, 0.32), 0 5px 0 rgba(73, 43, 136, 0.14);
+}
+
+.secondary-action {
+  color: #5b328f;
+  background: linear-gradient(135deg, #fff8d8, #f2e8ff);
+  box-shadow:
+    inset 0 0 0 1px rgba(127, 87, 255, 0.16),
+    0 10px 26px rgba(92, 55, 130, 0.1);
+}
+
+.mood-tile {
+  color: var(--ink);
+  background:
+    linear-gradient(145deg, rgba(255, 252, 234, 0.88), rgba(245, 231, 255, 0.76)),
+    radial-gradient(circle at 30% 20%, rgba(255, 211, 94, 0.32), transparent 50%);
+  box-shadow:
+    inset 0 0 0 1px rgba(121, 82, 184, 0.14),
+    0 18px 38px rgba(83, 48, 127, 0.12);
+}
+
+.mood-tile svg {
+  color: var(--violet);
+  filter: drop-shadow(0 6px 10px rgba(255, 177, 60, 0.28));
+}
+
+.mood-tile small,
+.soft-note,
+.message-panel p,
+.diary-card p,
+.guide-panel p,
+.week-map p,
+.diary-row p,
+.empty-state p {
+  color: var(--muted);
+}
+
+.mood-tile.selected {
+  background:
+    linear-gradient(145deg, rgba(255, 228, 103, 0.92), rgba(213, 188, 255, 0.88)),
+    #fff4bb;
+  box-shadow:
+    inset 0 0 0 3px rgba(127, 87, 255, 0.72),
+    0 20px 46px rgba(116, 72, 204, 0.22);
+}
+
+.message-panel,
+.diary-card,
+.guide-panel,
+.week-map,
+.diary-row,
+.empty-state {
+  border: 1px solid rgba(127, 87, 255, 0.16);
+  background:
+    linear-gradient(150deg, rgba(255, 254, 240, 0.86), rgba(246, 233, 255, 0.7)),
+    radial-gradient(circle at 100% 0, rgba(255, 209, 90, 0.22), transparent 44%);
+  box-shadow: 0 22px 54px rgba(76, 42, 130, 0.15);
+}
+
+.chips span {
+  color: #51318a;
+  background: linear-gradient(135deg, rgba(255, 213, 94, 0.72), rgba(213, 192, 255, 0.74));
+  box-shadow: inset 0 0 0 1px rgba(127, 87, 255, 0.12);
+}
+
+.create-screen {
+  grid-template-columns: 96px minmax(0, 1fr) 292px;
+}
+
+.tool-button {
+  color: var(--ink);
+  background:
+    linear-gradient(180deg, rgba(255, 254, 239, 0.88), rgba(246, 235, 255, 0.72)),
+    radial-gradient(circle at 50% 12%, rgba(255, 217, 98, 0.32), transparent 55%);
+  box-shadow:
+    inset 0 0 0 1px rgba(127, 87, 255, 0.12),
+    0 14px 28px rgba(75, 43, 136, 0.12);
+}
+
+.tool-button svg {
+  color: var(--tool-color);
+  filter: drop-shadow(0 4px 9px color-mix(in srgb, var(--tool-color) 46%, transparent));
+}
+
+.tool-button.active {
+  color: #2f2146;
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--tool-color) 28%, #fff3be), #fffaf0),
+    #fff4c8;
+  box-shadow:
+    inset 0 0 0 3px color-mix(in srgb, var(--tool-color) 78%, #fff),
+    0 18px 36px color-mix(in srgb, var(--tool-color) 24%, transparent);
+}
+
+.canvas-stage {
+  border: 1px solid rgba(127, 87, 255, 0.2);
+  background: linear-gradient(145deg, #ffeeb0, #eadcff);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.32),
+    0 24px 60px rgba(77, 41, 142, 0.18);
+}
+
+.canvas-caption {
+  color: #4f2a86;
+  background: rgba(255, 249, 219, 0.84);
+  box-shadow: 0 10px 24px rgba(80, 45, 125, 0.13);
+}
+
+.element-meter div {
+  color: #4f2b87;
+  background: linear-gradient(150deg, rgba(255, 225, 111, 0.58), rgba(224, 210, 255, 0.72));
+}
+
+.garden-scene {
+  background:
+    radial-gradient(circle at 14% 12%, rgba(255, 230, 118, 0.78), transparent 23%),
+    radial-gradient(circle at 82% 16%, rgba(142, 94, 255, 0.42), transparent 24%),
+    linear-gradient(180deg, #fff0a8 0%, #e1d1ff 52%, #ffe2a1 100%);
+  filter: saturate(calc(1.08 + var(--intensity) * 0.28)) brightness(calc(1 + var(--light) * 0.08));
+  box-shadow:
+    inset 0 0 0 1px rgba(127, 87, 255, 0.14),
+    inset 0 -60px 120px rgba(255, 178, 52, 0.12),
+    0 28px 72px rgba(80, 45, 139, 0.2);
+}
+
+.garden-scene::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(180deg, rgba(255, 247, 214, 0.06), rgba(127, 87, 255, 0.08)),
+    url("./assets/emotion-garden-map.png");
+  background-position: center bottom;
+  background-size: cover;
+  content: "";
+}
+
+.paper-grain {
+  background:
+    repeating-linear-gradient(0deg, rgba(80, 42, 134, 0.035) 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(90deg, rgba(255, 185, 59, 0.035) 0 1px, transparent 1px 8px);
+}
+
+.scene-aura {
+  position: absolute;
+  inset: -18%;
+  background:
+    conic-gradient(from 210deg at 50% 45%, rgba(255, 219, 95, 0.3), rgba(127, 87, 255, 0.24), rgba(115, 215, 255, 0.18), rgba(255, 219, 95, 0.3));
+  opacity: 0.34;
+  animation: auraTurn 18s linear infinite;
+}
+
+.sky-wash {
+  inset: 0 0 28%;
+  background:
+    radial-gradient(circle at 72% 12%, rgba(255, 255, 237, 0.6), transparent 12%),
+    linear-gradient(180deg, rgba(167, 128, 255, 0.46), rgba(255, 221, 110, 0.26) 58%, transparent);
+}
+
+.sun-wash {
+  top: 7%;
+  right: 9%;
+  width: 33%;
+  background: rgba(255, 219, 99, calc(0.28 + var(--intensity) * 0.16));
+  filter: blur(12px);
+}
+
+.garden-orbit {
+  position: absolute;
+  border: 2px solid rgba(255, 248, 213, 0.48);
+  border-radius: 50%;
+  transform: rotate(-16deg);
+}
+
+.orbit-one {
+  top: 12%;
+  left: 9%;
+  width: 74%;
+  height: 34%;
+}
+
+.orbit-two {
+  right: 8%;
+  bottom: 27%;
+  width: 62%;
+  height: 26%;
+  border-color: rgba(127, 87, 255, 0.22);
+}
+
+.golden-path {
+  position: absolute;
+  left: 14%;
+  right: 12%;
+  bottom: 15%;
+  height: 20%;
+  border-bottom: 12px solid rgba(255, 209, 90, 0.42);
+  border-radius: 50%;
+  filter: blur(1px);
+}
+
+.spark-dot {
+  position: absolute;
+  top: calc(14% + (var(--i) % 5) * 11%);
+  left: calc(12% + (var(--i) % 7) * 12%);
+  width: calc(5px + (var(--i) % 3) * 2px);
+  height: calc(5px + (var(--i) % 3) * 2px);
+  border-radius: 50%;
+  background: rgba(255, 250, 208, 0.9);
+  box-shadow: 0 0 14px rgba(255, 207, 88, 0.7);
+  animation: twinkle 2.8s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.23s);
+}
+
+.mood-haze.rain {
+  background: linear-gradient(180deg, rgba(83, 194, 255, 0.26), transparent 58%);
+}
+
+.mood-haze.wind {
+  background: linear-gradient(120deg, transparent 0 24%, rgba(138, 99, 255, 0.25) 48%, transparent 70%);
+}
+
+.mood-haze.flame {
+  background: radial-gradient(circle at 72% 54%, rgba(255, 130, 82, 0.32), transparent 32%);
+}
+
+.mood-haze.fog,
+.mood-haze.unknown {
+  background: rgba(215, 193, 255, 0.34);
+}
+
+.soil {
+  background:
+    radial-gradient(circle at 55% 6%, rgba(255, 231, 138, 0.42), transparent 18%),
+    linear-gradient(180deg, rgba(164, 111, 255, 0.28), rgba(113, 74, 163, 0.34));
+  box-shadow: inset 0 16px 34px rgba(255, 233, 151, 0.18);
+}
+
+.seed {
+  background: linear-gradient(145deg, #fff18e, #8f5cff 72%);
+  box-shadow: 0 0 18px rgba(255, 209, 90, 0.62);
+}
+
+.wind-line {
+  border-top-color: rgba(138, 99, 255, 0.58);
+  filter: drop-shadow(0 0 8px rgba(138, 99, 255, 0.28));
+}
+
+.rain-drop {
+  background: rgba(85, 199, 255, 0.62);
+  box-shadow: 0 0 10px rgba(85, 199, 255, 0.28);
+}
+
+.grass-blade {
+  border-left-color: rgba(88, 214, 141, 0.92);
+  filter: drop-shadow(0 0 7px rgba(88, 214, 141, 0.24));
+}
+
+.flower-bloom {
+  background:
+    radial-gradient(circle, #ffe76a 0 17%, transparent 18%),
+    radial-gradient(circle at 50% 8%, #ff7ab8 0 28%, transparent 29%),
+    radial-gradient(circle at 91% 50%, #c387ff 0 28%, transparent 29%),
+    radial-gradient(circle at 50% 91%, #ff7ab8 0 28%, transparent 29%),
+    radial-gradient(circle at 8% 50%, #c387ff 0 28%, transparent 29%);
+  filter: drop-shadow(0 8px 14px rgba(140, 80, 180, 0.24));
+}
+
+.sun-mark {
+  background: rgba(255, 209, 90, 0.62);
+  box-shadow:
+    0 0 0 18px rgba(255, 209, 90, 0.14),
+    0 0 42px rgba(255, 178, 52, 0.44);
+}
+
+.breath-orb {
+  background:
+    radial-gradient(circle, rgba(255, 255, 235, 0.95), rgba(255, 209, 90, 0.78) 45%, rgba(127, 87, 255, 0.42));
+  box-shadow: 0 0 46px rgba(255, 209, 90, 0.64), 0 0 90px rgba(127, 87, 255, 0.34);
+}
+
+.diary-card input {
+  color: var(--ink);
+  border-bottom-color: rgba(127, 87, 255, 0.24);
+}
+
+.mini-week span {
+  background: rgba(229, 211, 255, 0.72);
+  color: #5a368d;
+}
+
+.mini-week .filled {
+  background: color-mix(in srgb, var(--sun) calc(40% + var(--level) * 34%), var(--violet-soft));
+}
+
+@keyframes auraTurn {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    transform: scale(0.78);
+    opacity: 0.42;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 1;
+  }
+}
+
+/* Scene-map upgrade: layered exploratory garden, inspired by competition app map screens */
+.garden-scene > * {
+  z-index: 1;
+}
+
+.paper-grain {
+  z-index: 12;
+  pointer-events: none;
+}
+
+.scene-aura,
+.sky-wash,
+.mood-haze,
+.sun-wash {
+  z-index: 0;
+}
+
+.distant-hills {
+  position: absolute;
+  inset: auto 4% 48% 4%;
+  height: 28%;
+  z-index: 1;
+  opacity: 0.62;
+}
+
+.distant-hills span {
+  position: absolute;
+  bottom: 0;
+  width: 46%;
+  height: 72%;
+  border-radius: 58% 62% 0 0;
+  background: linear-gradient(180deg, rgba(133, 92, 223, 0.24), rgba(255, 216, 118, 0.08));
+  filter: blur(0.3px);
+}
+
+.distant-hills span:nth-child(1) {
+  left: 0;
+  transform: skewX(-12deg);
+}
+
+.distant-hills span:nth-child(2) {
+  left: 28%;
+  height: 96%;
+  background: linear-gradient(180deg, rgba(86, 198, 255, 0.18), rgba(155, 105, 234, 0.13));
+}
+
+.distant-hills span:nth-child(3) {
+  right: 0;
+  transform: skewX(10deg);
+}
+
+.garden-map {
+  position: absolute;
+  inset: 16% 6% 8%;
+  z-index: 4;
+  transform: perspective(820px) rotateX(18deg);
+  transform-origin: center bottom;
+  opacity: 0.48;
+  mix-blend-mode: soft-light;
+}
+
+.map-island,
+.river-ribbon,
+.stepping-stones,
+.moon-gate,
+.small-bridge,
+.listening-house,
+.field-lines,
+.lantern,
+.map-pin {
+  position: absolute;
+}
+
+.map-island {
+  border: 1px solid rgba(95, 55, 150, 0.13);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 54% 22%, rgba(255, 244, 171, 0.56), transparent 20%),
+    linear-gradient(180deg, rgba(255, 218, 128, 0.42), rgba(184, 136, 255, 0.36));
+  box-shadow:
+    inset 0 -20px 42px rgba(116, 73, 172, 0.13),
+    0 28px 52px rgba(92, 55, 140, 0.16);
+}
+
+.island-calm {
+  left: 2%;
+  right: 8%;
+  bottom: 0;
+  height: 56%;
+  transform: rotate(-2deg);
+}
+
+.island-water {
+  left: 4%;
+  bottom: 29%;
+  width: 38%;
+  height: 31%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 247, 190, 0.55), transparent 22%),
+    linear-gradient(180deg, rgba(104, 211, 255, 0.36), rgba(190, 151, 255, 0.28));
+  opacity: calc(0.7 + var(--rain-level) * 0.06);
+}
+
+.island-light {
+  right: 5%;
+  bottom: 33%;
+  width: 40%;
+  height: 33%;
+  background:
+    radial-gradient(circle at 62% 25%, rgba(255, 235, 130, calc(0.48 + var(--sun-level) * 0.08)), transparent 24%),
+    linear-gradient(180deg, rgba(255, 204, 87, 0.34), rgba(174, 126, 255, 0.26));
+}
+
+.river-ribbon {
+  left: 8%;
+  right: 9%;
+  bottom: 26%;
+  height: 24%;
+  border-bottom: 18px solid rgba(97, 204, 255, calc(0.32 + var(--rain-level) * 0.08));
+  border-radius: 50%;
+  transform: rotate(-5deg);
+  filter: drop-shadow(0 10px 14px rgba(88, 155, 210, 0.12));
+}
+
+.stepping-stones {
+  left: 38%;
+  bottom: 28%;
+  width: 22%;
+  height: 12%;
+  background:
+    radial-gradient(ellipse at 5% 58%, rgba(255, 248, 218, 0.88) 0 10%, transparent 11%),
+    radial-gradient(ellipse at 34% 42%, rgba(255, 248, 218, 0.88) 0 9%, transparent 10%),
+    radial-gradient(ellipse at 62% 52%, rgba(255, 248, 218, 0.88) 0 10%, transparent 11%),
+    radial-gradient(ellipse at 91% 38%, rgba(255, 248, 218, 0.88) 0 9%, transparent 10%);
+}
+
+.moon-gate {
+  right: 16%;
+  bottom: 46%;
+  width: 68px;
+  height: 74px;
+  border: 9px solid rgba(255, 238, 168, 0.86);
+  border-bottom-width: 12px;
+  border-radius: 50% 50% 40% 40%;
+  box-shadow: 0 12px 20px rgba(96, 61, 140, 0.14);
+}
+
+.small-bridge {
+  left: 30%;
+  bottom: 34%;
+  width: 96px;
+  height: 34px;
+  border-top: 12px solid rgba(255, 193, 89, 0.58);
+  border-radius: 50% 50% 0 0;
+  transform: rotate(-8deg);
+}
+
+.small-bridge::before,
+.small-bridge::after {
+  position: absolute;
+  top: -4px;
+  width: 8px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(102, 67, 151, 0.34);
+  content: "";
+}
+
+.small-bridge::before {
+  left: 16px;
+}
+
+.small-bridge::after {
+  right: 18px;
+}
+
+.listening-house {
+  left: 16%;
+  bottom: 43%;
+  width: 72px;
+  height: 58px;
+  border-radius: 16px 16px 12px 12px;
+  background: linear-gradient(180deg, rgba(255, 250, 224, 0.9), rgba(229, 201, 255, 0.78));
+  box-shadow: 0 14px 22px rgba(80, 45, 130, 0.16);
+}
+
+.listening-house::before {
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  top: -28px;
+  height: 38px;
+  border-radius: 28px 28px 10px 10px;
+  background: linear-gradient(135deg, rgba(255, 200, 86, 0.94), rgba(126, 90, 255, 0.72));
+  content: "";
+}
+
+.listening-house::after {
+  position: absolute;
+  left: 27px;
+  bottom: 0;
+  width: 19px;
+  height: 28px;
+  border-radius: 10px 10px 4px 4px;
+  background: rgba(76, 46, 124, 0.28);
+  content: "";
+}
+
+.field-lines {
+  right: 18%;
+  bottom: 18%;
+  width: 28%;
+  height: 20%;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(ellipse at center, transparent 0 13px, rgba(255, 247, 203, 0.46) 14px 16px, transparent 17px 24px);
+  opacity: calc(0.36 + var(--grass-level) * 0.11);
+  transform: rotate(-8deg);
+}
+
+.lantern {
+  width: 14px;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(255, 213, 91, calc(0.56 + var(--sun-level) * 0.08));
+  box-shadow: 0 0 18px rgba(255, 209, 90, 0.52);
+  animation: lanternGlow 3.2s ease-in-out infinite;
+}
+
+.lantern-one {
+  left: 49%;
+  bottom: 46%;
+}
+
+.lantern-two {
+  right: 26%;
+  bottom: 25%;
+  animation-delay: -1.1s;
+}
+
+.map-pin {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 250, 229, 0.9);
+  border-radius: 50% 50% 50% 4px;
+  box-shadow: 0 8px 16px rgba(70, 42, 121, 0.18);
+}
+
+.pin-wind {
+  left: 18%;
+  top: 22%;
+  background: #8a63ff;
+  opacity: calc(0.42 + var(--wind-level) * 0.12);
+  transform: rotate(-45deg);
+}
+
+.pin-rain {
+  left: 34%;
+  bottom: 36%;
+  background: #55c7ff;
+  opacity: calc(0.36 + var(--rain-level) * 0.14);
+  transform: rotate(-45deg);
+}
+
+.pin-sun {
+  right: 19%;
+  top: 28%;
+  background: #ffd15a;
+  opacity: calc(0.45 + var(--sun-level) * 0.12);
+  transform: rotate(-45deg);
+}
+
+.soil {
+  z-index: 5;
+  left: 14%;
+  right: 10%;
+  bottom: 6%;
+  height: 27%;
+  opacity: 0.24;
+}
+
+.seed {
+  z-index: 8;
+  bottom: 27%;
+}
+
+.grass-blade,
+.flower-bloom {
+  z-index: 9;
+}
+
+.wind-line,
+.rain-drop,
+.sun-mark {
+  z-index: 10;
+}
+
+.golden-path {
+  z-index: 6;
+  opacity: calc(0.58 + var(--sun-level) * 0.08);
+}
+
+.garden-orbit {
+  z-index: 3;
+  opacity: 0.42;
+}
+
+.spark-dot {
+  z-index: 11;
+}
+
+@keyframes lanternGlow {
+  0%,
+  100% {
+    transform: translateY(0) scale(0.92);
+    opacity: 0.72;
+  }
+  50% {
+    transform: translateY(-4px) scale(1.06);
+    opacity: 1;
+  }
+}

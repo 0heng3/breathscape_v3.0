@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" stroke="#91725b" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M 60 170 L 196 170
+M 68 170 C 100.8 132 155.2 132 188 170
+M 70 170 L 70 190.9
+M 186 170 L 186 190.9" stroke-width="5" />
+  <path d="M 52 170 L 52 206" stroke-width="5" />
+  <path d="M 204 170 L 204 206" stroke-width="5" />
+</svg>

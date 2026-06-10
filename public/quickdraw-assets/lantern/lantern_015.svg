@@ -1,0 +1,10 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="lantern">
+  <path d="M 137 94 L 91 94 L 14 105 L 0 120 L 0 129 L 5 134 L 20 139 L 57 139 L 146 123 L 151 113 L 150 99 L 140 94 L 128 94" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 130 94 L 140 85 L 154 55 L 174 50 L 183 56 L 193 73 L 195 113 L 189 136 L 177 158 L 165 160 L 156 151 L 148 106 L 148 84" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 175 66 L 170 77 L 167 108 L 169 114 L 177 122 L 181 117 L 181 77 L 178 68 L 173 65" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 203 48 L 207 37 L 249 0" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 195 156 L 207 182 L 227 209" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 211 141 L 223 141 L 252 151" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 215 83 L 255 72" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 216 31 L 240 31" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

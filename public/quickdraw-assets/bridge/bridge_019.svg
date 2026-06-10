@@ -1,0 +1,12 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="bridge">
+  <path d="M 7 124 L 18 121 L 142 130 L 255 130" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 8 122 L 14 117 L 27 93 L 42 16 L 46 5 L 99 13 L 220 5 L 224 44 L 242 97 L 248 148" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 54 6 L 58 70 L 65 112" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 76 17 L 81 34 L 85 105 L 92 131 L 96 134" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 121 12 L 124 22 L 126 101 L 128 114 L 133 122" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 155 18 L 157 30 L 159 104 L 164 126 L 170 127" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 192 16 L 196 30 L 198 106 L 203 122 L 207 123" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 220 0 L 223 68 L 231 109" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 5 124 L 6 149 L 25 139 L 64 145 L 186 136 L 224 143 L 254 142 L 248 139 L 236 119" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 0 183 L 16 203 L 27 209 L 38 200 L 49 184 L 53 205 L 61 212 L 91 191 L 99 206 L 112 209 L 133 198 L 154 180 L 151 196 L 156 204 L 162 206 L 181 198 L 199 178 L 197 190 L 204 199 L 220 195 L 239 179 L 242 180 L 246 192 L 251 194" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

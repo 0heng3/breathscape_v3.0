@@ -1,0 +1,5 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="grass">
+  <path d="M 5 128 L 1 111 L 0 132 L 13 254 L 12 136" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 12 136 L 12 134" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 12 134 L 16 196 L 23 216 L 23 241 L 74 43 L 98 255 L 108 255 L 86 199 L 78 171 L 68 114 L 65 67 L 117 161 L 152 255 L 153 248 L 121 136 L 131 141 L 152 163 L 166 188 L 69 30 L 53 1 L 56 1 L 88 34 L 153 113 L 134 88 L 83 38 L 133 146 L 182 231" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

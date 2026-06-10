@@ -1,0 +1,8 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="lantern">
+  <path d="M 1 252 L 116 244 L 99 207 L 88 206 L 20 216 L 17 229 L 5 255" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 63 210 L 56 199 L 56 185" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 41 210 L 38 185" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 29 185 L 75 179 L 76 86 L 70 60 L 21 64 L 1 63 L 0 65 L 0 113 L 7 166 L 16 181 L 26 191 L 49 187" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 54 62 L 56 34 L 52 18 L 43 5 L 33 0 L 23 7 L 12 31 L 13 45 L 20 70" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 45 68 L 43 45 L 37 28 L 33 27 L 24 43 L 24 50 L 29 61" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
