@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-cd /d E:\breathscape_v2.0
+cd /d E:\breathscape_v3.0
 mkdir quickdraw_selected 2>nul
 cd quickdraw_selected
 
