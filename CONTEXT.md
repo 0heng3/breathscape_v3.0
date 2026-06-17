@@ -1,305 +1,220 @@
-# BreathScape 高级交互能力上下文
+# BreathScape 项目上下文
 
-## 目标问题
+> 维护规则：每次对话结束前都要同步更新本文件，记录本轮读到的项目事实、已完成改动、验证结果、遗留问题和下一步建议。
 
-本文件记录两个高级交互能力在当前 BreathScape Web Demo 中的可实现性、当前实现状态、缺口与建议实现路径：
+更新时间：2026-06-17
 
-1. 线条实时生成音乐，并同步生成画面。
-2. 最后画完后，用摄像头读取身体姿势控制场景的动态变化。
+## 项目当前定位
 
-结论基于当前代码状态，而不是概念设想。
+BreathScape 是一个面向儿童情绪表达的 Web Demo。当前产品流程按 `fig/plan.png` 重构为：
 
----
+1. 情绪触发。
+2. 选择并进入花园。
+3. 选择元素。
+4. 开始绘画。
+5. 对应生成/优化画面。
+6. 识别画面并进行情绪解读。
+7. 引导改画（语音 + 手势交互）。
+8. 输出画面优化结果。
+9. 整理为情绪日记。
 
-## 1. 线条实时生成音乐，生成画面
+当前应用是 Vite + React 项目，主流程集中在 `src/App.jsx`，场景视觉集中在 `src/components/GardenStage.jsx`、`src/components/ThreeBillboardGarden.jsx` 和 `src/styles/global.css`。
 
-### 能否实现
-
-可以实现。
-
-Web 端可以使用 Pointer Events、Canvas/SVG、Web Audio API 或 Tone.js 完成该能力：
-
-- 画线过程中持续采集点位、速度、方向、密度、停顿等笔触参数；
-- 将笔触参数实时映射为音高、节奏、音量、音色和环境层；
-- 同步在场景中生成雨滴、草芽、光点、风痕等响应元素；
-- 画完后把原始笔迹柔化为表达痕迹，保留在日记画面中。
-
-### 当前是否已经实现
-
-已实现 Web Demo 第一版实时能力，但还不是完整作曲系统。
-
-当前已经实现：
-
-- `DrawingCanvas.jsx` 在绘制过程中采集 pointer 点位，并通过 `onStrokeMove` 持续上报实时笔触事件。
-- `strokeAnalysis.js` 在笔触结束后分析长度、速度、密度、方向、闭合度和区域。
-- `App.jsx` 的 `handleStroke` 会在一笔结束后更新场景状态。
-- `App.jsx` 的 `handleStrokeMove` 会在绘制过程中触发实时声音，并生成短生命周期 `liveResponses`。
-- `GardenStage.jsx` 会根据 `elementHistory` 生成响应簇，例如雨滴、水珠、草芽、光点、风痕和花。
-- `GardenStage.jsx` 会根据 `liveResponses` 在绘制中实时显示临时雨滴、草芽、光点等响应。
-- `DrawingCanvas.jsx` 已将最终笔迹柔化为低透明 trace layer。
-- `audioEngine.js` 已按元素生成不同声音纹理：雨滴串、草声、光铃声等。
-- `audioEngine.js` 新增 `playLiveElementTone`，绘制过程中按元素和速度节流触发实时声音。
-
-当前仍未完整实现：
-
-- 当前声音已经能随笔触实时触发，但仍是短音效/纹理，不是可持续的音乐层或声景 loop。
-- 没有旋律规则、和声音阶、节拍网格或多声部状态。
-- 没有将笔触停顿、反复涂抹、压力等实时映射到音乐变化。
-
-### 当前实现与目标的差距
-
-目标体验应是：
+GitHub 远程仓库已指向：
 
 ```text
-手指正在画雨 -> 雨声实时变密 -> 画面同步落雨
-手指正在画草 -> 沙沙声实时出现 -> 草芽沿笔触附近长出
-手指正在画光 -> 铃声/泛音实时变化 -> 光点沿线扩散
+https://github.com/0heng3/breathscape_v3.0.git
 ```
 
-当前体验已经升级为：
+运行代码和文档中未发现仍引用旧 GitHub 2.0 仓库路径；仅 `log_83.txt`、`log_96.txt` 这类历史日志里保留了 `E:\breathscape_v2.0\public\quickdraw-cnn` 输出记录，未改写历史日志。
 
-```text
-手指正在画 -> 实时声音纹理响起 -> 临时雨滴/草芽/光点出现
-画完一笔 -> 系统分析这笔 -> 沉淀为正式场景回应和柔化痕迹
+## 已有核心能力
+
+### 实时绘画与反馈
+
+- `DrawingCanvas.jsx` 采集 pointer 笔触。
+- `App.jsx` 在停笔后调用识别与规则逻辑，更新 `sceneState`。
+- `GardenStage.jsx` 根据 `elementHistory` 和 `liveResponses` 渲染花园元素。
+- `audioEngine.js` 已有元素声音反馈和实时声音触发能力。
+- QuickDraw 模型、模板和 CNN 资源已接入，用于停笔后的绘画识别。
+
+### 安放与姿态控制
+
+- `BreathePage.jsx` 负责呼吸安放流程。
+- `PoseSettleStage.jsx` 使用 `@mediapipe/tasks-vision` 的 Pose Landmarker 读取身体关键点。
+- `applyGestureSettling` 会根据姿态更新 `calmLevel`、`windEnergy`、`sunlightWarmth`、`gestureWind`、`gestureGlow` 等场景变量。
+- `GardenStage.jsx` 和 `ThreeBillboardGarden.jsx` 会使用这些变量驱动云、风、灯光、柔化、相机轻微运动和公告板植物摆动。
+
+## 新素材目录 `fig`
+
+源目录：`E:\breathscape_v3.0\fig`
+
+| 文件 | 尺寸 | 观察 | 推荐用途 |
+|---|---:|---|---|
+| `背景1.jpg` | 1419 x 1063 | 完整水彩远景：天空、山坡、草地、边缘植物，中心留白充足 | 作为花园远景底图或 2.5D 背景层 |
+| `云.png` | 1570 x 1003 | 多个云朵素材排版在白底图集上，无 alpha 通道 | 裁切为透明云 sprite 后用于天空 billboards |
+| `草.png` | 1653 x 1045 | 多个草丛/小花草素材排版在白底图集上，无 alpha 通道 | 裁切为透明草丛 sprite 后插入地面层 |
+| `花.png` | 1147 x 937 | 多个花朵素材排版在白底图集上，无 alpha 通道 | 裁切为透明花朵 sprite 后用于前中景 |
+| `plan.png` | 659 x 677 | 流程说明图，文字为“情绪触发、选择并进入花园、选择元素、开始绘画、对应的优化画面、识别画面→情绪解读、引导改画（语音+手势交互）、画面优化结果、整理为情绪日记” | 已转化为画布页流程 HUD 的信息架构参考 |
+| `贴图实现3D效果示例.mp4` | 720 x 938, 约 103 秒 | 参考效果是 2D 贴图分层、透视地面、多层 billboard、风动/漂浮，而不是复杂 3D 模型 | 作为视觉方向参考，保留在源素材目录，不放入 `public` 发布包 |
+
+重要发现：`云.png`、`草.png`、`花.png` 是 24-bit RGB，没有透明通道。直接用 CSS 图集裁剪会露出白色矩形边界，即使用 `mix-blend-mode: multiply` 也不够干净。因此运行时使用裁切后的透明 PNG sprite。
+
+## 参考项目 `E:\3D_v1` 技术路线分析
+
+`E:\3D_v1` 是已实现的部分复刻项目，核心价值在于视频同款技术骨架：
+
+- Three.js `PerspectiveCamera` + 低角度透视，形成手机端 3D 花田视角。
+- `InstancedMesh` 承载大量花、草、树、云公告板。
+- `onBeforeCompile` 改写顶点着色器，在视图空间展开平面，使植物始终面向镜头。
+- 风摆只作用在花草顶点上，树和云不做同等幅度摆动。
+- 透视棋盘格地面由 CanvasTexture 平铺生成。
+- UI 是半透明玻璃面板，包含素材、摆放、设置等分区。
+
+本项目采用“嵌入式迁移”而不是完全替换：保留现有 React 绘画识别/情绪日记流程，将 `E:\3D_v1` 的 Three.js 公告板场景压缩为 React 组件，作为花园画布动态底座。
+
+## 本轮实现：动态 Three.js 公告板花园
+
+目标：继续模仿 `贴图实现3D效果示例.mp4` 的动态交互效果，并按 `plan.png` 的流程重构画布页。
+
+### 新增 Three.js 底座
+
+新增文件：
+
+- `src/components/ThreeBillboardGarden.jsx`
+
+实现内容：
+
+- 使用 `three` 创建透明 WebGL 画布，铺在 `GardenStage` 内部。
+- 程序化生成水彩风透明贴图：
+  - 花。
+  - 草。
+  - 树。
+  - 云。
+  - 蝴蝶。
+- 用 `InstancedMesh` 建立公告板层，每个贴图一个实例层。
+- 通过 `onBeforeCompile` 改写顶点投影，使贴图在视图空间展开，始终面向镜头。
+- 顶点着色器根据 `uTime`、`uWind`、`uSway` 做顶部风摆。
+- 透视棋盘地面使用 CanvasTexture 平铺生成。
+- 相机自动缓慢环绕，同时响应画布区域 pointer 位置做轻微 parallax。
+- 场景由现有 `sceneState` 驱动：
+  - `grassCoverage` / `growthLevel` 增加草层密度。
+  - `flowerBloom` / `flowerCount` 增加花层密度。
+  - `windEnergy` / `gestureWind` 增强风摆和相机运动。
+  - `sunlightWarmth` / `nightSparkle` / `brightness` 调整曝光与氛围。
+  - `elementHistory` 最近元素会映射为 3D 空间中的附加花、草、云或光点。
+- WebGL 层设置 `pointer-events: none`，不阻挡绘画 canvas。
+
+### 接入现有花园
+
+修改文件：
+
+- `src/components/GardenStage.jsx`
+  - 引入并渲染 `ThreeBillboardGarden`。
+  - 保留原有 CSS `Watercolor3DLayer`，形成“水彩底图 + CSS 2.5D + Three.js 动态公告板 + 绘画 canvas”的层级。
+- `src/styles/global.css`
+  - 新增 `.three-billboard-garden`。
+  - 新增 `.garden-flow-panel`。
+  - 追加画布页视频风格布局覆盖：沉浸式画布、底部横向工具条、右侧轻玻璃反馈面板、移动端纵向堆叠。
+- `src/routes/CanvasPage.jsx`
+  - 重写为 UTF-8 中文。
+  - 增加基于 `plan.png` 的流程 HUD：`选择元素 → 开始绘画 → 识别画面 → 引导改画 → 情绪日记`。
+  - 保留原有绘画、识别、反馈、安放入口逻辑。
+- `package.json` / `package-lock.json`
+  - 新增运行依赖 `three`。
+
+### 旧 2.5D 贴图层保留
+
+上一轮已完成内容继续保留：
+
+- `Watercolor3DLayer` 使用 `背景1.jpg` 作为远景背景。
+- 通过 `scripts/extractFigSprites.ps1` 将 `云.png`、`草.png`、`花.png` 裁切为透明 PNG。
+- 运行时素材位于 `public/fig/` 和 `public/fig/sprites/`。
+- `贴图实现3D效果示例.mp4` 不放入 `public`，避免发布包增加约 38MB。
+
+## 当前视觉分层
+
+1. 远景水彩背景：`背景1.jpg`。
+2. CSS 2.5D 层：云、草、花 sprite 与透视地面。
+3. Three.js 动态层：透视棋盘地面、树林、花草、云、蝴蝶、自动相机环绕和风摆。
+4. 绘画层：`DrawingCanvas`，保持最高可交互层。
+5. 反馈层：流程 HUD、声音提示、右侧识别反馈和工具条。
+
+## 验证记录
+
+已运行：
+
+```powershell
+npm.cmd run build
 ```
 
-这已经具备“实时声景线描”的第一版雏形，但还不是完整音乐生成系统。
+结果：
 
-### 如何实现完整版本
+- 构建通过。
+- Vite 仍提示主 chunk 超过 500KB；原因是现有模型相关代码和新增 Three.js 都进入主包。当前不影响运行，后续可用动态 import 拆包。
 
-建议分三步实现。
+Playwright / Chrome 视觉检查：
 
-#### P0：实时笔触事件流
+- `/mood-scene`
+  - `.three-billboard-garden` 存在。
+  - WebGL canvas 尺寸与舞台匹配。
+  - 控制台无 warning / error。
+  - 截图：`output/playwright/mood-scene-3d-check.png`
+- `/garden` 桌面 1180 x 860
+  - `.three-billboard-garden` 存在。
+  - `.garden-flow-panel` 存在。
+  - WebGL canvas 与绘画 canvas 同尺寸叠放。
+  - 无水平溢出。
+  - 控制台无 warning / error。
+  - 截图：`output/playwright/garden-3d-flow-check-final.png`
+- `/garden` 移动端 390 x 844
+  - `.three-billboard-garden` 存在。
+  - `.garden-flow-panel` 存在。
+  - 无水平溢出。
+  - 画布、工具条、反馈面板纵向排列，无互相遮挡。
+  - 截图：`output/playwright/garden-3d-mobile-check.png`
 
-新增一个实时笔触回调，不只在 `onPointerUp` 时触发：
+## 素材使用方案
 
-```jsx
-<DrawingCanvas
-  activeTool={activeTool}
-  onStrokeMove={handleStrokeMove}
-  onStroke={handleStroke}
-/>
-```
+### `背景1.jpg`
 
-`DrawingCanvas.jsx` 在 `move` 中传出当前增量：
+- 当前作为 CSS 2.5D 远景背景。
+- 保持低透明度，避免覆盖笔触和识别反馈。
+- 后续可按 mood/day 调整滤镜：安静降饱和、晴朗增暖、雨后叠蓝绿色 haze。
 
-```js
-onStrokeMove({
-  tool: activeTool.id,
-  point,
-  previous,
-  speed,
-  direction,
-  pressure,
-  canvasWidth,
-  canvasHeight
-});
-```
+### `云.png`
 
-#### P0：实时声音引擎
+- 当前通过裁切后的 `public/fig/sprites/cloud-*.png` 用于 CSS 2.5D 云层。
+- Three.js 层同时使用程序化云贴图，补足视频中的动态漂浮感。
+- 后续可继续裁切更多云形，并绑定 `cloud` / `windLine` 工具。
 
-将 `playElementTone` 升级为持续型 SoundEngine：
+### `草.png`
 
-```js
-soundEngine.startStroke(tool);
-soundEngine.updateStroke(features);
-soundEngine.endStroke();
-```
+- 当前裁切为草丛 sprite，用于 CSS 2.5D 中前景。
+- Three.js 层用程序化草贴图补充大量随风摆动的草。
+- 后续应把具体 sprite 与 `grass`、`sprout`、`reed`、`moss` 等工具 ID 绑定。
 
-不同元素映射：
+### `花.png`
 
-| 元素 | 实时声音 |
-|---|---|
-| 雨 | 密度越高，雨滴触发越密；速度越快，雨声更急 |
-| 草 | 向上短线触发轻沙沙声；越密，草声越厚 |
-| 光 | 轻点生成铃声；长线生成持续泛音 |
-| 风 | 速度控制风声滤波和音量 |
-| 花 | 闭合度或弧线触发柔和开花音 |
+- 当前裁切为花朵 sprite，用于 CSS 2.5D 中前景。
+- Three.js 层按 mood tone 程序化生成不同颜色花朵，并由 `flowerBloom` 驱动密度。
+- 后续可将裁切花朵直接用于 Three.js texture layer，提高与原始素材一致性。
 
-技术上可以继续用 Web Audio API，也可以引入 Tone.js 管理 synth、loop 和 envelope。
+### `plan.png`
 
-#### P1：实时视觉响应层
+- 已作为本轮画布页重构的信息架构来源。
+- 运行时不直接展示图片，而是转化为流程 HUD。
 
-在 `GardenStage` 中新增 transient response layer：
+### `贴图实现3D效果示例.mp4`
 
-```js
-const [liveResponses, setLiveResponses] = useState([]);
-```
+- 用于复刻方向，不进入发布资源。
+- 当前已复刻的要点：透视地面、公告板花草树云、相机轻微环绕、风摆、玻璃面板式 UI。
 
-`handleStrokeMove` 根据当前工具追加短生命周期响应：
+## 下一步建议
 
-- 雨：当前点附近生成 1-3 个雨滴；
-- 草：地面附近生成 1-2 根草芽；
-- 光：沿笔触生成光点；
-- 风：沿路径生成风痕；
-- 花：在闭合/弧线处生成花苞。
-
-这些实时响应在 1-3 秒内淡出，笔触结束后再沉淀为 `elementHistory` 的正式回应簇。
-
----
-
-## 2. 最后画完，用姿势控制场景动态变化
-
-### 能否实现
-
-可以实现，但实现方式取决于“姿势”的定义。
-
-可选路线：
-
-1. 摄像头身体/手势识别：使用 MediaPipe、TensorFlow.js 或 WebRTC + 手势模型。
-2. 设备姿态控制：在 iPad 上使用 DeviceOrientationEvent，根据倾斜角控制风、光、云和草的动态。
-3. 摄像头姿势控制：使用 MediaPipe Pose Landmarker 读取肩膀、手腕等关键点，驱动风、光和安放程度。
-
-当前 Web Demo 已接入第 3 种作为第一版实现。iPad 倾斜控制可以作为后续补充。
-
-### 当前是否已经实现
-
-已实现摄像头姿势控制第一版。
-
-当前已经有：
-
-- 安放模式：`BreathePage.jsx` 使用呼吸光点引导收尾。
-- 场景动态：`GardenStage.jsx` 有云移动、风线、草摆动、小灯发光等 CSS 动效。
-- 场景状态：`applyBreathCalming` 会降低风、雨、声音强度，提高 calmLevel。
-- `PoseSettleStage.jsx` 会在安放页请求摄像头，并用 `@mediapipe/tasks-vision` 的 Pose Landmarker 读取身体关键点。
-- 当前识别肩膀、手腕、手肘关键点，判断双手靠近、双手抬起、单手抬起和身体稳定。
-- `applyGestureSettling` 会根据姿势更新 calmLevel、windEnergy、sunlightWarmth、animationSpeed、gestureWind 和 gestureGlow。
-- `GardenStage.jsx` 读取 `gestureWind` 和 `gestureGlow`，让云、小灯光晕和轻风状态随姿势变化。
-- 安放页会显示姿势提示，例如“双手靠近了，小灯被轻轻捧亮”“一只手在带风，云会轻轻跟着走”。
-
-当前没有：
-
-- 没有 DeviceOrientationEvent。
-- 没有 iPad 倾斜控制。
-- 没有复杂手势分类模型，只使用关键点规则。
-
-### 推荐实现方式
-
-当前版本已改为“摄像头姿势控制安放场景”。下面的触摸方案不再作为主方案，只可作为摄像头不可用时的备选降级。
-
-#### P0：长按安放
-
-在安放页或创作页完成后，用户长按花园：
-
-```text
-长按越稳定 -> calmLevel 越高
-长按位置靠近小灯 -> 小灯更亮
-松手 -> 花园进入最终日记状态
-```
-
-实现方式：
-
-- 在 `GardenStage` 外层加 `onPointerDown / onPointerMove / onPointerUp`；
-- 记录长按时长、移动幅度；
-- 如果时长超过 1200ms 且移动小于阈值，逐步提高 calmLevel；
-- 同时降低 `animationSpeed`、`rainDensity`、`windEnergy`。
-
-#### P0：滑动带动风
-
-在安放模式中允许儿童用慢慢滑动控制风：
-
-```text
-向左/向右慢慢滑 -> 云和风痕跟着移动
-滑得越慢 -> 花园越安静
-滑得越快 -> 小灯提醒慢一点
-```
-
-实现方式：
-
-- 计算 pointer move 的方向和速度；
-- 将方向映射到 CSS 变量 `--gesture-wind-x`；
-- 将速度映射到 `windEnergy` 和 `animationSpeed`。
-
-#### P1：双指捧光
-
-支持两指靠近小灯：
-
-```text
-两指靠近 -> 小灯光晕变大
-两指稳定停留 -> 花园进入安放
-两指分开 -> 光点扩散
-```
-
-实现方式：
-
-- 维护 active pointers map；
-- 计算两指中心点和距离；
-- 中心点靠近小灯区域时提高 `sunlightWarmth` 和 `calmLevel`；
-- 距离变化控制光晕半径。
-
-#### P1：iPad 倾斜控制
-
-适合 iPad Demo：
-
-```text
-iPad 轻轻倾斜 -> 云慢慢移动，草轻轻摆
-设备回正并保持 -> 花园稳定下来
-```
-
-实现方式：
-
-- 使用 `DeviceOrientationEvent`；
-- iOS 需要用户点击后请求权限；
-- 将 `gamma/beta` 映射到风向和光点偏移；
-- 必须设置低通滤波，避免画面抖动。
-
-#### P2：摄像头手势识别
-
-适合展示亮点，但不建议第一阶段作为主路径：
-
-- 使用 MediaPipe Hands 或 Pose Landmarker；
-- 识别张手、合手、慢慢抬手、靠近小灯等动作；
-- 映射到光晕、风向、安放程度。
-
-风险：
-
-- 需要摄像头权限；
-- 不同设备性能差异明显；
-- 儿童隐私和安全说明成本高；
-- Web Demo 中调试复杂度较高。
-
----
-
-## 建议落地顺序
-
-### 第一阶段：最稳妥
-
-1. 实现 `onStrokeMove`。
-2. 实现持续型 `SoundEngine`。
-3. 绘制中实时生成雨滴、草芽、光点。
-4. 安放页加入长按安放。
-5. 安放页加入慢滑控制风和云。
-
-### 第二阶段：更像 iPad App
-
-1. 加入双指捧光。
-2. 加入 iPad 设备倾斜控制。
-3. 增加声音 loop 和环境声层。
-4. 日记保存时记录姿势安放过程。
-
-### 第三阶段：展示型高级能力
-
-1. 引入 MediaPipe 手势识别。
-2. 用手势控制小灯光晕、风向、花园远近。
-3. 录制成比赛展示视频。
-
----
-
-## 当前状态总结
-
-| 能力 | 当前状态 |
-|---|---|
-| 线条生成画面 | 已实现；一笔结束后生成正式场景回应 |
-| 线条实时生成画面 | 已实现第一版；绘制中生成 live response |
-| 线条生成声音 | 已实现；一笔结束后触发元素声音纹理 |
-| 线条实时生成音乐 | 已实现第一版实时声音；仍未做完整旋律/多声部音乐系统 |
-| 画完后安放场景 | 已实现；呼吸光点、柔化、trace layer |
-| 姿势控制场景动态 | 已实现第一版；摄像头身体姿势影响场景 |
-| 摄像头姿势控制 | 已实现第一版；MediaPipe Pose 关键点规则 |
-| 触摸姿势控制 | 已移除；不再作为姿势控制主方案 |
-| iPad 倾斜控制 | 未实现，可作为第二阶段 |
-| 摄像头复杂手势分类 | 未实现，可作为展示型高级能力 |
-
-总体判断：
-
-当前 Demo 已经从“笔触结束后触发回应”推进到“绘制中实时声景反馈 + 绘制中实时画面响应 + 安放页摄像头姿势控制”的第一版。后续如果要更接近高级演示，可以继续做持续音乐层、iPad 姿态控制和更复杂的摄像头手势分类。
+1. 将 `ThreeBillboardGarden.jsx` 内程序化 sprite 生成逻辑拆到 `src/three/` 或 `src/garden3d/`，避免单文件继续膨胀。
+2. 将 `public/fig/sprites/*.png` 接入 Three.js texture loader，让真实裁切素材和程序化补充素材混合使用。
+3. 建立 `src/data/figSpriteMap.js`，把 sprite、工具 ID、情绪 tone、层级、默认尺寸集中配置。
+4. 增加日记花园布局：将日记条目按年月日映射到 3D 棋盘格，生成日期/月名文字贴图，靠近视频中的“日历花海”。
+5. 增加轻量控制面板：日/夜、风力、视角重置、显示地面、显示网格、进入摆放模式。
+6. 后续性能优化：对 Three.js 组件使用动态 import，或将 QuickDraw/MediaPipe 相关代码拆包，降低首屏主 chunk。

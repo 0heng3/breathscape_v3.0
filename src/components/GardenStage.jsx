@@ -1,5 +1,6 @@
 import React from 'react';
 import { initialSceneState } from '../utils/sceneState';
+import ThreeBillboardGarden from './ThreeBillboardGarden';
 
 function GardenStage({
   mood,
@@ -71,6 +72,14 @@ function GardenStage({
         <span />
         <span />
       </div>
+      <Watercolor3DLayer sceneState={sceneState} quiet={quiet} calm={calm} />
+      <ThreeBillboardGarden
+        mood={mood}
+        sceneState={sceneState}
+        elementHistory={elementHistory}
+        quiet={quiet}
+        calm={calm}
+      />
       <div className="garden-map">
         <span className="garden-path" />
         <span className="river-ribbon" />
@@ -92,6 +101,76 @@ function GardenStage({
       <span className="lamp-aura" aria-hidden="true" />
       {children}
     </div>
+  );
+}
+
+const FIG_CLOUDS = [
+  { sprite: 1, x: 18, y: 20, z: -110, scale: 0.86, delay: -1.2 },
+  { sprite: 2, x: 52, y: 16, z: -70, scale: 1.08, delay: -4.4 },
+  { sprite: 7, x: 78, y: 25, z: -40, scale: 0.82, delay: -2.8 },
+];
+
+const FIG_PLANTS = [
+  { kind: 'grass', sprite: 2, x: 18, y: 74, z: 40, scale: 0.9, delay: -0.8 },
+  { kind: 'grass', sprite: 8, x: 40, y: 70, z: 70, scale: 0.82, delay: -2.1 },
+  { kind: 'grass', sprite: 14, x: 63, y: 72, z: 92, scale: 0.78, delay: -1.4 },
+  { kind: 'grass', sprite: 20, x: 84, y: 78, z: 130, scale: 1.08, delay: -3.2 },
+  { kind: 'flower', sprite: 1, x: 28, y: 80, z: 110, scale: 0.86, delay: -2.4 },
+  { kind: 'flower', sprite: 4, x: 52, y: 76, z: 130, scale: 0.94, delay: -1.6 },
+  { kind: 'flower', sprite: 7, x: 70, y: 84, z: 170, scale: 1.1, delay: -3.6 },
+  { kind: 'flower', sprite: 16, x: 42, y: 90, z: 210, scale: 1.2, delay: -0.4 },
+];
+
+function Watercolor3DLayer({ sceneState, quiet, calm }) {
+  const grassAmount = Math.min(1, Math.max(0.22, sceneState.grassCoverage || 0));
+  const flowerAmount = Math.min(1, Math.max(0.16, sceneState.flowerBloom || 0));
+  const windAmount = Math.min(1, Math.max(0, sceneState.windEnergy || 0));
+  const calmAmount = Math.min(1, Math.max(0, sceneState.calmLevel || 0));
+  const sceneDepth = quiet || calm ? 0.68 : 1;
+
+  return (
+    <div
+      className="watercolor-3d-layer"
+      style={{
+        '--fig-grass-amount': grassAmount,
+        '--fig-flower-amount': flowerAmount,
+        '--fig-wind-amount': windAmount,
+        '--fig-calm-amount': calmAmount,
+        '--fig-depth': sceneDepth,
+      }}
+      aria-hidden="true"
+    >
+      <div className="watercolor-3d-backdrop" />
+      <div className="watercolor-3d-ground" />
+      <div className="watercolor-3d-clouds">
+        {FIG_CLOUDS.map((item, index) => (
+          <FigSprite item={{ ...item, kind: 'cloud' }} index={index} key={`cloud-${item.sprite}`} />
+        ))}
+      </div>
+      <div className="watercolor-3d-plants">
+        {FIG_PLANTS.map((item, index) => (
+          <FigSprite item={item} index={index} key={`${item.kind}-${item.sprite}-${index}`} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function FigSprite({ item, index }) {
+  return (
+    <span
+      className={`fig-sprite fig-sprite--${item.kind} fig-sprite--${item.kind}-${item.sprite}`}
+      style={{
+        '--fig-x': `${item.x}%`,
+        '--fig-y': `${item.y}%`,
+        '--fig-z': `${item.z}px`,
+        '--fig-scale': item.scale,
+        '--fig-delay': `${item.delay || index * -0.7}s`,
+        '--fig-index': index,
+      }}
+    >
+      <span className="fig-sprite__art" />
+    </span>
   );
 }
 
