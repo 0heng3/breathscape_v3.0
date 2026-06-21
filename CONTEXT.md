@@ -1,5 +1,20 @@
 # BreathScape 项目上下文
 
+## 2026-06-21 补充：Vercel 静态部署生成跳转修复
+
+- 线上 Vercel 当前按 Vite 静态站部署，`vercel.json` 只把路由 rewrite 到 `index.html`，没有启动 `server/src/index.js`。
+- 本地能跳转是因为本地同时运行了 `node server/src/index.js`，`/api/story-scene/generate` 和轮询接口能返回真实 JSON。
+- Vercel 上如果 API 被 rewrite 成 app shell，旧逻辑会把 HTML 当 JSON 解析失败，生成流程不会进入 `onOpenStage()`，因此停在生成页。
+- 修复点：`src/story-scene/storySceneApi.js`
+  - 非本地域名不再 fallback 到用户电脑的 `http://127.0.0.1:3008`。
+  - API 返回 HTML/app shell 时明确识别为非 JSON。
+  - 仅 `provider=mock` 且线上 API 不可用时，浏览器本地生成 SVG data URL job，并复用原轮询和舞台跳转流程。
+  - 真实 provider 不使用本地假图兜底；如果线上 API 未部署，仍会暴露错误，避免误以为 NewAPI/Yunwu/OpenAI 已真实生成。
+- 验证：
+  - `npm.cmd run build` 通过。
+  - 在 `vite preview` 中拦截 `/api/story-scene/*` 返回 HTML，模拟 Vercel 静态 rewrite，点击 Mock 后成功进入 `/story-scene/stage`。
+  - 截图：`output/playwright/story-static-mock-fallback.png`。
+
 ## 2026-06-21 补充：按 sample 视频重构手势动态
 
 ### 参考素材
