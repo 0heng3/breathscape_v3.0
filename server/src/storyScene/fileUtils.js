@@ -14,6 +14,9 @@ export async function ensureGeneratedDir() {
 }
 
 export async function writeGeneratedPng(jobId, buffer) {
+  if (process.env.VERCEL) {
+    return `data:image/png;base64,${buffer.toString('base64')}`;
+  }
   return writeGeneratedAsset(jobId, buffer, 'png');
 }
 
@@ -27,6 +30,7 @@ export async function writeGeneratedAsset(jobId, buffer, extension = 'png') {
 }
 
 export async function readUploadBuffer(file) {
+  if (file?.buffer) return file.buffer;
   if (!file?.path) return null;
   return fs.readFile(file.path);
 }

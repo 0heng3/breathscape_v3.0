@@ -56,7 +56,9 @@ function StoryScenePage({ onBack, onOpenStage }) {
       });
       setSourceImage(submitted.drawingPng);
       setJob(submitted);
-      const done = await pollStorySceneJob(submitted.jobId, (nextJob) => setJob((current) => ({ ...current, ...nextJob })));
+      const done = isTerminalStoryJob(submitted)
+        ? submitted
+        : await pollStorySceneJob(submitted.jobId, (nextJob) => setJob((current) => ({ ...current, ...nextJob })));
       setStatus(done?.status === 'done' ? 'done' : 'error');
       if (done?.status !== 'done') {
         setError(done?.error || '生成没有完成，请检查后端服务。');
@@ -207,6 +209,10 @@ function StoryScenePage({ onBack, onOpenStage }) {
       </div>
     </section>
   );
+}
+
+function isTerminalStoryJob(job) {
+  return ['done', 'error', 'blocked'].includes(job?.status);
 }
 
 function normalizeImageUrl(imageUrl) {

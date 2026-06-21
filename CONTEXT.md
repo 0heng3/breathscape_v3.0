@@ -1,5 +1,20 @@
 # BreathScape 项目上下文
 
+## 2026-06-21 补充：Vercel Yunwu 405 修复
+
+- 现象：本地 Yunwu 生成正常，Vercel 上选择 Yunwu 点击生成时报 `Story scene request failed: HTTP 405`。
+- 原因：项目原先只部署了 Vite 静态站，`server/src/index.js` 没有作为 Vercel API 函数部署；同时 SPA fallback 可能把 `/api/story-scene/generate` rewrite 到 `index.html`，POST 就会变成 405 或 HTML。
+- 修复：
+  - 新增 `server/src/app.js`，把 Express app 从本地监听入口拆出来复用。
+  - `server/src/index.js` 只负责本地 `listen(3008)`，本地开发方式不变。
+  - 新增 `api/story-scene/[...path].js`，在 Vercel 上把 `/api/story-scene/*` 交给同一个 Express app。
+  - `vercel.json` 的 SPA fallback 改为排除 `/api/`，避免 API 被首页 rewrite 吃掉。
+  - Vercel 环境下上传文件使用 memory storage，provider 可通过 `file.buffer` 读取。
+  - Vercel 环境下 base64 生成图直接返回 `data:image/png;base64,...`，避免写入 serverless 临时文件后浏览器无法访问。
+  - 生成接口在 Vercel 上同步返回终态 job，前端看到 `done/error/blocked` 时不再继续轮询，避免无状态函数实例丢失 job。
+- 注意：Vercel 项目必须配置 `YUNWU_BASE_URL`、`YUNWU_API_KEY`、可选 `YUNWU_IMAGE_MODEL` 和 `YUNWU_IMAGE_SIZE`。
+- 验证：`npm.cmd run build` 通过；Vercel 函数入口可导入；本地 `node server/src/index.js` health 返回正常。
+
 ## 2026-06-21 补充：Vercel 静态部署生成跳转修复
 
 - 线上 Vercel 当前按 Vite 静态站部署，`vercel.json` 只把路由 rewrite 到 `index.html`，没有启动 `server/src/index.js`。
