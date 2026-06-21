@@ -12,6 +12,8 @@ function GardenStage({
   quiet = false,
   calm = false,
   diary = false,
+  interactionMode = 'draw',
+  handDrawOnly = false,
   children,
 }) {
   const pathLevel = sceneState.pathCompletion || 0;
@@ -21,7 +23,7 @@ function GardenStage({
 
   return (
     <div
-      className={`garden-stage layout-${gardenDay?.layout || 'courtyard'} mood-${mood.tone} lamp-${getLampState(sceneState, quiet, calm)} gesture-${sceneState.gestureAction || 'still_stand'} ${quiet ? 'quiet' : ''} ${calm ? 'calm' : ''} ${diary ? 'diary' : ''}`}
+      className={`garden-stage layout-${gardenDay?.layout || 'courtyard'} mood-${mood.tone} lamp-${getLampState(sceneState, quiet, calm)} gesture-${sceneState.gestureAction || 'still_stand'} mode-${interactionMode} ${quiet ? 'quiet' : ''} ${calm ? 'calm' : ''} ${diary ? 'diary' : ''} ${handDrawOnly ? 'hand-draw-only' : ''}`}
       style={{
         '--wind-level': sceneState.windEnergy,
         '--rain-level': sceneState.rainDensity,
@@ -72,13 +74,15 @@ function GardenStage({
         <span />
         <span />
       </div>
-      <Watercolor3DLayer sceneState={sceneState} quiet={quiet} calm={calm} />
+      <Watercolor3DLayer sceneState={sceneState} quiet={quiet} calm={calm} handDrawOnly={handDrawOnly} />
       <ThreeBillboardGarden
         mood={mood}
         sceneState={sceneState}
         elementHistory={elementHistory}
         quiet={quiet}
         calm={calm}
+        interactionMode={interactionMode}
+        handDrawOnly={handDrawOnly}
       />
       <div className="garden-map">
         <span className="garden-path" />
@@ -93,9 +97,9 @@ function GardenStage({
       )}
       <div className="soil-wetness" />
       <span className="gesture-wind-ribbon" />
-      <div className="breathscape-element-layer" aria-hidden="true">
-        {[...elementHistory, ...liveResponses].map((item, index) => (
-          <ResponseCluster item={item} index={index} live={Boolean(item.live)} key={item.id || `${item.tool}-${index}`} />
+      <div className="breathscape-element-layer breathscape-element-layer--live" aria-hidden="true">
+        {liveResponses.map((item, index) => (
+          <ResponseCluster item={item} index={index} live key={item.id || `${item.tool}-${index}`} />
         ))}
       </div>
       <span className="lamp-aura" aria-hidden="true" />
@@ -121,9 +125,9 @@ const FIG_PLANTS = [
   { kind: 'flower', sprite: 16, x: 42, y: 90, z: 210, scale: 1.2, delay: -0.4 },
 ];
 
-function Watercolor3DLayer({ sceneState, quiet, calm }) {
-  const grassAmount = Math.min(1, Math.max(0.22, sceneState.grassCoverage || 0));
-  const flowerAmount = Math.min(1, Math.max(0.16, sceneState.flowerBloom || 0));
+function Watercolor3DLayer({ sceneState, quiet, calm, handDrawOnly = false }) {
+  const grassAmount = handDrawOnly ? 0 : Math.min(1, Math.max(0.22, sceneState.grassCoverage || 0));
+  const flowerAmount = handDrawOnly ? 0 : Math.min(1, Math.max(0.16, sceneState.flowerBloom || 0));
   const windAmount = Math.min(1, Math.max(0, sceneState.windEnergy || 0));
   const calmAmount = Math.min(1, Math.max(0, sceneState.calmLevel || 0));
   const sceneDepth = quiet || calm ? 0.68 : 1;
@@ -142,16 +146,20 @@ function Watercolor3DLayer({ sceneState, quiet, calm }) {
     >
       <div className="watercolor-3d-backdrop" />
       <div className="watercolor-3d-ground" />
-      <div className="watercolor-3d-clouds">
-        {FIG_CLOUDS.map((item, index) => (
-          <FigSprite item={{ ...item, kind: 'cloud' }} index={index} key={`cloud-${item.sprite}`} />
-        ))}
-      </div>
-      <div className="watercolor-3d-plants">
-        {FIG_PLANTS.map((item, index) => (
-          <FigSprite item={item} index={index} key={`${item.kind}-${item.sprite}-${index}`} />
-        ))}
-      </div>
+      {!handDrawOnly && (
+        <>
+          <div className="watercolor-3d-clouds">
+            {FIG_CLOUDS.map((item, index) => (
+              <FigSprite item={{ ...item, kind: 'cloud' }} index={index} key={`cloud-${item.sprite}`} />
+            ))}
+          </div>
+          <div className="watercolor-3d-plants">
+            {FIG_PLANTS.map((item, index) => (
+              <FigSprite item={item} index={index} key={`${item.kind}-${item.sprite}-${index}`} />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -260,6 +268,15 @@ function ResponseCluster({ item, index, live = false }) {
   const rawY = clampPercent(item.y, item.canvasHeight, 10, 86);
   const y = isGroundTool(item.tool) ? Math.max(rawY, 62) : rawY;
   const intensity = Math.min(1, Math.max(0.2, item.speed || item.density || 0.5));
+  if (item.placementPreview) {
+    return (
+      <span
+        className={`generated-element placement-preview placement-preview--${isGroundTool(item.tool) ? 'ground' : 'sky'}`}
+        style={{ '--x': `${x}%`, '--y': `${y}%`, '--i': index }}
+        aria-hidden="true"
+      />
+    );
+  }
   const count = live ? getResponseCount(item.tool, intensity) : 1;
   const family = getToolFamily(item.tool);
   return (

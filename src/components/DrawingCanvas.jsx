@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { getLocalStageRect, getStagePoint } from '../utils/coordinateUtils';
 
-function DrawingCanvas({ activeTool, activeLabel, onStroke, onStrokeMove, clearTraceSignal = 0 }) {
+function DrawingCanvas({ activeTool, activeLabel, active = true, onStroke, onStrokeMove, clearTraceSignal = 0 }) {
   const canvasRef = useRef(null);
   const drawing = useRef(null);
   const traces = useRef([]);
@@ -57,6 +57,8 @@ function DrawingCanvas({ activeTool, activeLabel, onStroke, onStrokeMove, clearT
   }
 
   function start(event) {
+    if (!active) return;
+    if (isSceneRotateGesture(event)) return;
     event.preventDefault();
     try {
       canvasRef.current.setPointerCapture?.(event.pointerId);
@@ -189,9 +191,15 @@ function DrawingCanvas({ activeTool, activeLabel, onStroke, onStrokeMove, clearT
       onPointerUp={end}
       onPointerCancel={end}
       onPointerLeave={end}
+      onContextMenu={(event) => event.preventDefault()}
+      data-active={active ? 'true' : 'false'}
       aria-label={`当前绘画：${activeLabel || activeTool?.label || activeTool?.name || '自由画'}`}
     />
   );
+}
+
+function isSceneRotateGesture(event) {
+  return event.button !== 0;
 }
 
 function redrawTraces(canvas, items, now = performance.now(), activeDrawing = null) {

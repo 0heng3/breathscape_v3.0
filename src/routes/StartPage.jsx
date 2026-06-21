@@ -1,4 +1,4 @@
-import { BookOpen, Play } from 'lucide-react';
+import { BookOpen, ImagePlus, Play } from 'lucide-react';
 import React from 'react';
 import ElementSvgIcon from '../components/ElementSvgIcon';
 import GardenStage from '../components/GardenStage';
@@ -7,7 +7,7 @@ import { gardenDays } from '../data/gardenDays';
 import { getTool } from '../data/tools';
 import { createInitialSceneState } from '../utils/sceneState';
 
-function StartPage({ mood, selectedDay = 1, onSelectDay, onStart, onOpenDiary }) {
+function StartPage({ mood, selectedDay = 1, onSelectDay, onStart, onOpenStoryScene, onOpenDiary }) {
   const gardenDay = gardenDays[selectedDay - 1] || gardenDays[0];
 
   return (
@@ -35,6 +35,10 @@ function StartPage({ mood, selectedDay = 1, onSelectDay, onStart, onOpenDiary })
           <SoftButton onClick={onStart}>
             <Play size={26} />
             开始绘画
+          </SoftButton>
+          <SoftButton variant="secondary" onClick={onOpenStoryScene}>
+            <ImagePlus size={22} />
+            生成故事场景
           </SoftButton>
           <SoftButton variant="quiet" onClick={onOpenDiary}>
             <BookOpen size={22} />

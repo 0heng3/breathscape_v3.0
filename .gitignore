@@ -18,3 +18,7 @@ Thumbs.db
 
 .vercel
 .env*
+!.env.example
+.tmp/
+public/generated/story-scene/*
+!public/generated/story-scene/.gitkeep

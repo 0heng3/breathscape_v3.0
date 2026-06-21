@@ -1,5 +1,5 @@
-import { Volume2 } from 'lucide-react';
-import React from 'react';
+import { Pencil, RotateCcw, Volume2 } from 'lucide-react';
+import React, { useState } from 'react';
 import DrawingCanvas from '../components/DrawingCanvas';
 import ElementToolBar from '../components/ElementToolBar';
 import FeedbackPanel from '../components/FeedbackPanel';
@@ -23,6 +23,7 @@ function CanvasPage({
   onFinish,
   onSuggest,
 }) {
+  const [interactionMode, setInteractionMode] = useState('draw');
   const drawingLabel = selectedToolId ? (activeTool.label || activeTool.name) : '自由画';
   const flowSteps = getCanvasFlowSteps(recognitionProcess, strokes.length, selectedToolId);
 
@@ -30,16 +31,51 @@ function CanvasPage({
     <section className="screen canvas-page page-enter">
       <ElementToolBar activeToolId={selectedToolId} onSelectTool={onSelectTool} toolOrder={gardenDay.tools} />
       <div className="canvas-stage">
-        <GardenStage mood={mood} gardenDay={gardenDay} sceneState={sceneState} elementHistory={elementHistory} liveResponses={liveResponses}>
+        <GardenStage
+          mood={mood}
+          gardenDay={gardenDay}
+          sceneState={sceneState}
+          elementHistory={elementHistory}
+          liveResponses={liveResponses}
+          interactionMode={interactionMode}
+          handDrawOnly
+        >
+          <div className="canvas-mode-switch" role="group" aria-label="画布模式">
+            <button
+              type="button"
+              className={interactionMode === 'draw' ? 'active' : ''}
+              onClick={() => setInteractionMode('draw')}
+              aria-pressed={interactionMode === 'draw'}
+            >
+              <Pencil size={16} />
+              <span>绘画</span>
+            </button>
+            <button
+              type="button"
+              className={interactionMode === 'view' ? 'active' : ''}
+              onClick={() => setInteractionMode('view')}
+              aria-pressed={interactionMode === 'view'}
+            >
+              <RotateCcw size={16} />
+              <span>旋转</span>
+            </button>
+          </div>
           <div className="garden-flow-panel" aria-label="花园流程">
             {flowSteps.map((step) => (
               <span className={step.active ? 'active' : ''} key={step.label}>{step.label}</span>
             ))}
           </div>
-          <DrawingCanvas activeTool={activeTool} activeLabel={drawingLabel} onStroke={onStroke} onStrokeMove={onStrokeMove} clearTraceSignal={clearTraceSignal} />
+          <DrawingCanvas
+            activeTool={activeTool}
+            activeLabel={drawingLabel}
+            active={interactionMode === 'draw'}
+            onStroke={onStroke}
+            onStrokeMove={onStrokeMove}
+            clearTraceSignal={clearTraceSignal}
+          />
           <div className="canvas-caption">
             <Volume2 size={18} />
-            <span>可以画多笔；停下来后，花园会识别并整理成元素。</span>
+            <span>{interactionMode === 'draw' ? '绘画模式：画完停一下，元素会落到笔触位置。' : '旋转模式：拖动画布调整角度。'}</span>
           </div>
         </GardenStage>
       </div>

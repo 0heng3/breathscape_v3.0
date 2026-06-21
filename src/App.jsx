@@ -10,6 +10,8 @@ import DiaryPage from './routes/DiaryPage';
 import GuidePage from './routes/GuidePage';
 import MoodPage from './routes/MoodPage';
 import StartPage from './routes/StartPage';
+import StoryScenePage from './routes/StoryScenePage';
+import StoryStagePage from './routes/StoryStagePage';
 import { prepareAudio, playElementTone } from './utils/audioEngine';
 import { applyGestureSettling, createFeedback, createInitialSceneState, updateSceneState } from './utils/sceneState';
 import { loadDiaries, saveDiaries } from './utils/storage';
@@ -23,7 +25,7 @@ import { mapQuickDrawCategoryToTool } from './data/quickdrawCategoryToolMap';
 import { classifyWithQuickDrawCnn, loadQuickDrawCnnModel } from './utils/quickdrawCnnClassifier';
 import { rasterizeQuickDrawDrawing, rasterToDataUrl } from './utils/quickdrawRasterizer';
 
-const routes = ['/start', '/mood-scene', '/guide', '/garden', '/breath', '/diary-card', '/diary-list'];
+const routes = ['/start', '/story-scene', '/story-scene/stage', '/mood-scene', '/guide', '/garden', '/breath', '/diary-card', '/diary-list'];
 
 function normalizeRoute(pathname) {
   const clean = pathname === '/' ? '/start' : pathname;
@@ -71,6 +73,7 @@ function App() {
   const [feedback, setFeedback] = useState('可以自由画。停笔后一起整理。');
   const [diaries, setDiaries] = useState(loadDiaries);
   const [viewingDiaryId, setViewingDiaryId] = useState(null);
+  const [storyStageJob, setStoryStageJob] = useState(null);
   const [title, setTitle] = useState('今天的小花园');
   const [muted, setMuted] = useState(false);
   const pendingStrokeSessionRef = useRef([]);
@@ -188,12 +191,17 @@ function App() {
   }
 
   function goBack() {
+    if (route === '/story-scene/stage') {
+      navigate('/story-scene');
+      return;
+    }
     if (route === '/breath' && viewingDiaryId) {
       setViewingDiaryId(null);
       navigate('/diary-list');
       return;
     }
     const previous = {
+      '/story-scene': '/start',
       '/mood-scene': '/start',
       '/guide': '/mood-scene',
       '/garden': '/guide',
@@ -350,9 +358,13 @@ function App() {
   }
 
   function handleStrokeMove(event) {
-    if (event.phase === 'end') return;
+    if (event.phase === 'end') {
+      setLiveResponses([]);
+      return;
+    }
     const selected = selectedToolRef.current;
     if (!selected) {
+      setLiveResponses([]);
       setRecognitionProcess((current) => ({
         ...current,
         phase: current.phase === 'idle' ? 'drawing' : current.phase,
@@ -362,6 +374,19 @@ function App() {
       return;
     }
     const toolMeta = getToolElement(selected);
+    if (event.point) {
+      setLiveResponses([{
+        id: `${event.id}-placement-preview`,
+        tool: selected,
+        x: event.point.x,
+        y: event.point.y,
+        canvasWidth: event.canvasWidth,
+        canvasHeight: event.canvasHeight,
+        createdAt: performance.now(),
+        placementPreview: true,
+        live: true,
+      }]);
+    }
     setRecognitionProcess((current) => ({
       ...current,
       phase: current.phase === 'idle' ? 'drawing' : current.phase,
@@ -516,6 +541,11 @@ function App() {
     navigate('/start');
   }
 
+  function openStoryStage(job) {
+    setStoryStageJob(job);
+    navigate('/story-scene/stage');
+  }
+
   const showBack = route !== '/start';
 
   return (
@@ -544,7 +574,24 @@ function App() {
         </header>
 
         {route === '/start' && (
-          <StartPage mood={mood} selectedDay={selectedDay} onSelectDay={chooseDay} onStart={startGarden} onOpenDiary={() => navigate('/diary-list')} />
+          <StartPage
+            mood={mood}
+            selectedDay={selectedDay}
+            onSelectDay={chooseDay}
+            onStart={startGarden}
+            onOpenStoryScene={() => navigate('/story-scene')}
+            onOpenDiary={() => navigate('/diary-list')}
+          />
+        )}
+        {route === '/story-scene' && (
+          <StoryScenePage onBack={() => navigate('/start')} onOpenStage={openStoryStage} />
+        )}
+        {route === '/story-scene/stage' && (
+          <StoryStagePage
+            stageJob={storyStageJob}
+            onBack={() => navigate('/story-scene')}
+            onRestart={() => navigate('/story-scene')}
+          />
         )}
         {route === '/mood-scene' && (
           <MoodPage
