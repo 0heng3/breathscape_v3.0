@@ -1,5 +1,6 @@
-import { Camera, CameraOff, Sparkles, Wind } from 'lucide-react';
+import { Camera, CameraOff, CircleGauge, Sparkles, Wind } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
+import { DEFAULT_STORY_MOTION_CONTROLS } from '../story-scene/storyMotionControls';
 
 const VISION_TASKS_URL = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/wasm';
 const POSE_MODEL_URL =
@@ -11,25 +12,19 @@ const FACE_MODEL_URL =
 const DETECT_INTERVAL_MS = 70;
 const EMIT_INTERVAL_MS = 120;
 
-export const DEFAULT_STORY_CAMERA_CONTROLS = {
-  windStrength: 0.32,
-  windDirection: 0.25,
-  rainAmount: 0.02,
-  sunWarmth: 0.52,
-  sparkleDensity: 0.42,
-  flowerBloom: 0.5,
-  calmLevel: 0.68,
-};
+export const DEFAULT_STORY_CAMERA_CONTROLS = DEFAULT_STORY_MOTION_CONTROLS;
 
-function StoryCameraController({ onControlsChange }) {
+function StoryCameraController({ onControlsChange, onInteractionChange }) {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
   const frameRef = useRef(0);
+  const runningRef = useRef(false);
   const modelsRef = useRef({ pose: null, hand: null, face: null });
   const previousFrameRef = useRef(null);
   const smoothedRef = useRef(DEFAULT_STORY_CAMERA_CONTROLS);
   const lastDetectRef = useRef(0);
   const lastEmitRef = useRef(0);
+  const detectionErrorsRef = useRef(0);
 
   const [cameraState, setCameraState] = useState('idle');
   const [statusText, setStatusText] = useState('摄像头未开启');
@@ -37,6 +32,7 @@ function StoryCameraController({ onControlsChange }) {
 
   useEffect(() => {
     onControlsChange?.(DEFAULT_STORY_CAMERA_CONTROLS);
+    onInteractionChange?.(null);
     return () => {
       stopStream();
       cancelAnimationFrame(frameRef.current);
@@ -44,13 +40,15 @@ function StoryCameraController({ onControlsChange }) {
       modelsRef.current.hand?.close?.();
       modelsRef.current.face?.close?.();
     };
-  }, [onControlsChange]);
+  }, [onControlsChange, onInteractionChange]);
 
   async function startCamera() {
+    let stream = null;
     try {
+      stopCameraResources();
       setCameraState('loading');
-      setStatusText('正在打开摄像头');
-      const [{ FilesetResolver, PoseLandmarker, HandLandmarker, FaceLandmarker }, stream] = await Promise.all([
+      setStatusText('正在连接本地识别');
+      const [{ FilesetResolver, PoseLandmarker, HandLandmarker, FaceLandmarker }, nextStream] = await Promise.all([
         import('@mediapipe/tasks-vision'),
         navigator.mediaDevices.getUserMedia({
           video: {
@@ -62,38 +60,57 @@ function StoryCameraController({ onControlsChange }) {
           audio: false,
         }),
       ]);
+      stream = nextStream;
       const resolver = await FilesetResolver.forVisionTasks(VISION_TASKS_URL);
       const [pose, hand, face] = await Promise.all([
         createPoseLandmarker(PoseLandmarker, resolver),
         createHandLandmarker(HandLandmarker, resolver),
         createFaceLandmarker(FaceLandmarker, resolver),
       ]);
+      if (!pose && !hand && !face) {
+        throw new Error('MediaPipe models could not be loaded.');
+      }
       modelsRef.current = { pose, hand, face };
       streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        await videoRef.current.play();
+        await safePlayVideo(videoRef.current);
       }
+      runningRef.current = true;
+      detectionErrorsRef.current = 0;
       setCameraState('ready');
-      setStatusText(face ? '姿势、手势和表情已连接' : '姿势和手势已连接');
+      setStatusText(createModelStatus(modelsRef.current));
       detectFrame();
     } catch (error) {
-      console.error(error);
+      if (!isExpectedCameraError(error)) {
+        console.error(error);
+      }
+      stream?.getTracks().forEach((track) => track.stop());
+      stopCameraResources();
       setCameraState('blocked');
-      setStatusText('摄像头没有打开');
+      setStatusText(createCameraErrorText(error));
       onControlsChange?.(DEFAULT_STORY_CAMERA_CONTROLS);
+      onInteractionChange?.(null);
     }
   }
 
   function stopCamera() {
-    cancelAnimationFrame(frameRef.current);
-    stopStream();
+    stopCameraResources();
     previousFrameRef.current = null;
     smoothedRef.current = DEFAULT_STORY_CAMERA_CONTROLS;
     setReadout(DEFAULT_STORY_CAMERA_CONTROLS);
     setCameraState('idle');
     setStatusText('摄像头已关闭');
     onControlsChange?.(DEFAULT_STORY_CAMERA_CONTROLS);
+    onInteractionChange?.(null);
+  }
+
+  function stopCameraResources() {
+    runningRef.current = false;
+    cancelAnimationFrame(frameRef.current);
+    stopStream();
+    Object.values(modelsRef.current).forEach((model) => model?.close?.());
+    modelsRef.current = { pose: null, hand: null, face: null };
   }
 
   function stopStream() {
@@ -106,25 +123,39 @@ function StoryCameraController({ onControlsChange }) {
 
   function detectFrame(now = performance.now()) {
     const video = videoRef.current;
-    if (!video || cameraState === 'blocked') return;
+    if (!video || !runningRef.current) return;
 
     if (video.readyState >= 2 && now - lastDetectRef.current >= DETECT_INTERVAL_MS) {
       lastDetectRef.current = now;
-      const models = modelsRef.current;
-      const poseResult = models.pose?.detectForVideo(video, now);
-      const handResult = models.hand?.detectForVideo(video, now);
-      const faceResult = models.face?.detectForVideo(video, now);
-      const frame = normalizeFrame(poseResult, handResult, faceResult);
-      const estimated = estimateControls(frame, previousFrameRef.current);
-      previousFrameRef.current = frame;
-      const smoothed = smoothControls(smoothedRef.current, estimated, 0.16);
-      smoothedRef.current = smoothed;
+      try {
+        const models = modelsRef.current;
+        const poseResult = models.pose?.detectForVideo(video, now);
+        const handResult = models.hand?.detectForVideo(video, now);
+        const faceResult = models.face?.detectForVideo(video, now);
+        const frame = normalizeFrame(poseResult, handResult, faceResult);
+        const estimated = estimateControls(frame, previousFrameRef.current);
+        previousFrameRef.current = frame;
+        const smoothed = smoothControls(smoothedRef.current, estimated, 0.12);
+        smoothedRef.current = smoothed;
+        detectionErrorsRef.current = 0;
 
-      if (now - lastEmitRef.current >= EMIT_INTERVAL_MS) {
-        lastEmitRef.current = now;
-        onControlsChange?.(smoothed);
-        setReadout(smoothed);
-        setStatusText(createStatusText(frame, smoothed));
+        if (now - lastEmitRef.current >= EMIT_INTERVAL_MS) {
+          lastEmitRef.current = now;
+          onControlsChange?.(smoothed);
+          onInteractionChange?.(createInteractionState(frame, smoothed, now));
+          setReadout(smoothed);
+          setStatusText(createStatusText(frame, smoothed));
+        }
+      } catch (error) {
+        detectionErrorsRef.current += 1;
+        if (detectionErrorsRef.current === 1) {
+          console.warn('Story camera detection skipped:', error);
+        }
+        if (detectionErrorsRef.current >= 8) {
+          setStatusText('识别暂时停顿，正在恢复');
+          previousFrameRef.current = null;
+          detectionErrorsRef.current = 0;
+        }
       }
     }
 
@@ -152,6 +183,14 @@ function StoryCameraController({ onControlsChange }) {
           <span style={{ '--level': readout.sparkleDensity }}>
             <Sparkles size={14} />
             光
+          </span>
+          <span style={{ '--level': readout.cameraPush }}>
+            <Camera size={14} />
+            靠近
+          </span>
+          <span style={{ '--level': readout.calmLevel }}>
+            <CircleGauge size={14} />
+            安静
           </span>
         </div>
       </div>
@@ -241,7 +280,30 @@ function normalizeFrame(poseResult, handResult, faceResult) {
     };
   });
   const blendshapes = faceResult?.faceBlendshapes?.[0]?.categories || [];
-  return { pose, hands, blendshapes };
+  const face = faceResult?.faceLandmarks?.[0] || null;
+  return { pose, hands, blendshapes, face };
+}
+
+function createInteractionState(frame, controls, timestamp) {
+  const hands = frame.hands.map((hand) => ({
+    x: clamp(1 - hand.center.x, 0, 1),
+    y: clamp(hand.center.y, 0, 1),
+    label: hand.label,
+    score: hand.score,
+  }));
+  const mouthPoint = frame.face?.[13] || frame.face?.[0] || null;
+  const mouth = mouthPoint
+    ? { x: clamp(1 - mouthPoint.x, 0, 1), y: clamp(mouthPoint.y, 0, 1) }
+    : null;
+  const handSpread = hands.length > 1 ? distance(hands[0], hands[1]) : 0;
+  return {
+    timestamp,
+    hands,
+    mouth,
+    handSpread,
+    raised: hands.some((hand) => hand.y < 0.46),
+    energy: controls.windStrength,
+  };
 }
 
 function estimateControls(frame, previous) {
@@ -255,11 +317,19 @@ function estimateControls(frame, previous) {
   return {
     windStrength: clamp(Math.max(source.windStrength, poseControls.windStrength * 0.55), 0, 1),
     windDirection: clamp(source.windDirection || poseControls.windDirection || 0, -1, 1),
+    windGust: clamp(Math.max(source.windStrength, poseControls.windStrength) * 0.92, 0, 1),
     rainAmount: clamp(source.rainAmount + faceControls.rainAmount, 0, 0.72),
     sunWarmth: clamp(Math.max(source.sunWarmth, faceControls.sunWarmth), 0, 1),
     sparkleDensity: clamp(Math.max(source.sparkleDensity, faceControls.sparkleDensity), 0, 1),
     flowerBloom: clamp(Math.max(source.flowerBloom, faceControls.flowerBloom), 0, 1),
     calmLevel: clamp(Math.max(source.calmLevel, faceControls.calmLevel), 0, 1),
+    cameraPush: clamp(Math.max(source.cameraPush || 0, poseControls.cameraPush || 0), 0, 1),
+    cameraBreath: clamp(0.22 + Math.max(source.calmLevel, faceControls.calmLevel) * 0.56, 0, 1),
+    cloudAmount: clamp(
+      0.56 + (source.rainAmount + faceControls.rainAmount) * 0.48 - Math.max(source.windStrength, poseControls.windStrength) * 0.62,
+      0.04,
+      0.96,
+    ),
   };
 }
 
@@ -283,6 +353,7 @@ function estimateHandControls(hands, previousHands) {
     sparkleDensity: clamp((closeHands ? 0.84 : 0.36) + (raised ? 0.12 : 0), 0, 1),
     flowerBloom: clamp(closeHands ? 0.86 : 0.48, 0, 1),
     calmLevel: clamp(stillness * 0.78 + (closeHands ? 0.16 : 0), 0, 1),
+    cameraPush: 0.08,
   };
 }
 
@@ -300,15 +371,20 @@ function estimatePoseControls(pose, previousPose) {
   const leftRaised = leftWrist.y < leftShoulder.y - 0.035;
   const rightRaised = rightWrist.y < rightShoulder.y - 0.035;
   const travel = previousPose ? wristTravel(pose, previousPose) : { x: 0, y: 0, amount: 0 };
+  const shoulderWidth = distance(leftShoulder, rightShoulder);
+  const previousShoulderWidth = previousPose?.length ? distance(previousPose[11], previousPose[12]) : shoulderWidth;
+  const forwardMotion = clamp((shoulderWidth - previousShoulderWidth) * 18, 0, 1);
+  const armsOpen = distance(leftWrist, rightWrist) > shoulderWidth * 2.45;
 
   return {
-    windStrength: clamp((Math.abs(travel.x) * 10 + motion * 6) * visibility, 0, 1),
+    windStrength: clamp((Math.abs(travel.x) * 10 + motion * 6 + (armsOpen ? 0.34 : 0)) * visibility, 0, 1),
     windDirection: clamp((travel.x || handCenter.x - shoulderCenter.x) * 4.2, -1, 1),
     rainAmount: clamp((1 - stillness) * 0.12, 0, 0.34),
     sunWarmth: clamp((leftRaised || rightRaised ? 0.76 : 0.42) * visibility, 0, 1),
     sparkleDensity: clamp((leftRaised && rightRaised ? 0.72 : 0.36) * visibility, 0, 1),
     flowerBloom: clamp((leftRaised && rightRaised ? 0.7 : 0.46) * visibility, 0, 1),
     calmLevel: clamp(stillness * 0.84, 0, 1),
+    cameraPush: clamp(0.08 + forwardMotion * visibility, 0, 1),
   };
 }
 
@@ -336,6 +412,7 @@ function estimateFaceControls(blendshapes) {
 
 function createStatusText(frame, controls) {
   if (!frame.hands.length && !frame.pose && !frame.blendshapes.length) return '还没有看清动作';
+  if (controls.cameraPush > 0.46) return '靠近时，花园也轻轻靠近';
   if (controls.windStrength > 0.58) return '风正在跟着手移动';
   if (controls.sunWarmth > 0.72) return '暖光正在升起';
   if (controls.sparkleDensity > 0.68) return '光点变多了';
@@ -373,12 +450,46 @@ function smoothControls(current, target, amount) {
   return {
     windStrength: lerp(current.windStrength, target.windStrength, amount),
     windDirection: lerp(current.windDirection, target.windDirection, amount * 0.75),
+    windGust: lerp(current.windGust, target.windGust, amount),
+    cloudAmount: lerp(current.cloudAmount, target.cloudAmount, amount),
     rainAmount: lerp(current.rainAmount, target.rainAmount, amount),
     sunWarmth: lerp(current.sunWarmth, target.sunWarmth, amount),
     sparkleDensity: lerp(current.sparkleDensity, target.sparkleDensity, amount),
     flowerBloom: lerp(current.flowerBloom, target.flowerBloom, amount),
     calmLevel: lerp(current.calmLevel, target.calmLevel, amount),
+    cameraPush: lerp(current.cameraPush, target.cameraPush, amount * 0.7),
+    cameraBreath: lerp(current.cameraBreath, target.cameraBreath, amount * 0.5),
   };
+}
+
+function createModelStatus(models) {
+  const sources = [
+    models.pose ? '姿势' : '',
+    models.hand ? '手势' : '',
+    models.face ? '表情' : '',
+  ].filter(Boolean);
+  return `${sources.join('、')}已在本地连接`;
+}
+
+function createCameraErrorText(error) {
+  if (!window.isSecureContext) return '请使用 localhost 或 HTTPS 打开摄像头';
+  if (error?.name === 'NotAllowedError') return '摄像头权限未允许';
+  if (error?.name === 'NotFoundError') return '没有找到可用摄像头';
+  if (error?.name === 'NotReadableError') return '摄像头正被其他应用占用';
+  return '本地识别没有连接成功';
+}
+
+function isExpectedCameraError(error) {
+  return ['NotAllowedError', 'NotFoundError', 'NotReadableError', 'AbortError'].includes(error?.name);
+}
+
+function safePlayVideo(video) {
+  const playPromise = video.play();
+  if (!playPromise?.then) return Promise.resolve();
+  return Promise.race([
+    playPromise.catch(() => {}),
+    new Promise((resolve) => window.setTimeout(resolve, 1200)),
+  ]);
 }
 
 function averagePoint(points) {

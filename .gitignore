@@ -2,6 +2,7 @@
 node_modules/
 dist/
 output/
+sample/*.mp4
 .playwright-cli/
 quickdraw_selected/*.ndjson
 quickdraw_cache/
